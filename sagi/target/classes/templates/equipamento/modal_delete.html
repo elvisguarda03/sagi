@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<body>
+	<th:block th:fragment="modal">
+		<div class="modal" id="modalDelete">
+			<p id="idEquipamento" name="idEquipamento"></p>
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+			        <h4 class="modal-title">Apagar Equipamento</h4>
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			      </div>
+				
+			      <div class="modal-body">
+			        Confirma exclusão desse equipamento?
+			      </div>
+			
+			      <div class="modal-footer">
+			        <a type="button" class="btn btn-danger" data-dismiss="modal">Confirmar</a>
+			        <a type="button" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+			      </div>
+			
+			    </div>
+			 </div>
+		</div>
+	</th:block>
+</body>
+</html>

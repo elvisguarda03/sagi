@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>SAGI Basic SENAI | Login</title>
+
+
+<!--STYLESHEET-->
+<!--=================================================-->
+
+<!--Open Sans Font [ OPTIONAL ] -->
+<link type="text/css"
+	th:href="@{http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin}"
+	rel="stylesheet">
+
+
+<!-- Bootstrap Stylesheet [ REQUIRED ] -->
+<link type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}"
+	rel="stylesheet">
+
+
+<!-- Nifty Stylesheet [ REQUIRED ] -->
+<link type="text/css" th:href="@{/bootstrap/css/nifty.min.css}" rel="stylesheet">
+
+
+<!--Premium Icons [ OPTIONAL ]-->
+<link type="text/css"
+	th:href="@{/premium/icon-sets/icons/line-icons/premium-line-icons.min.css}"
+	rel="stylesheet">
+<link
+	th:href="@{/premium/icon-sets/icons/solid-icons/premium-solid-icons.min.css}"
+	rel="stylesheet">
+<link type="text/css" th:href="@{/plugins/font-awesome/css/font-awesome.min.css}"
+	rel="stylesheet">
+
+
+<!--=================================================-->
+
+
+<!--Page Load Progress Bar [ OPTIONAL ]-->
+<link type="text/css" th:href="@{/bootstrap/css/pace.min.css}" rel="stylesheet">
+<script type="text/css" th:src="@{/bootstrap/js/pace.min.js}"></script>
+
+<!--=================================================
+
+    REQUIRED
+    You must include this in your project.
+
+
+    RECOMMENDED
+    This category must be included but you may modify which plugins or components which should be included in your project.
+
+
+    OPTIONAL
+    Optional plugins. You may choose whether to include it in your project or not.
+
+
+    Detailed information and more samples can be found in the document.
+
+    =================================================-->
+
+</head>
+<body>
+	<div id="container" class="cls-container">
+
+		<!-- BACKGROUND IMAGE -->
+		<!--===================================================-->
+		<div id="bg-overlay" class="bg-img"
+			style="background-image: url(/sagi/resources/images/cimatec.png"></div>
+
+
+		<!-- LOGIN FORM -->
+		<!--===================================================-->
+		<div class="cls-content">
+			<div class="cls-content-sm panel">
+				<div class="panel-body">
+					<th:block th:if="${loginError}">
+						<p><span class="alert alert-danger">Usuário ou senha inválido!</span></p>
+					</th:block>
+					<div class="mar-ver pad-btm">
+						<h1 class="h3">SAGI | SENAI</h1>
+					</div>
+					<form th:action="@{/login}" th:autocomplete="on" th:method="POST">
+						<div class="form-group">
+							<input type="text" class="form-control" required=""
+								placeholder="Usuário" name="username" autofocus="">
+						</div>
+						<div class="form-group">
+							<input type="password" required="" name="password"
+								class="form-control" placeholder="Senha">
+						</div>
+						<div class="checkbox pad-btm text-left">
+							<input id="demo-form-checkbox" class="magic-checkbox"
+								type="checkbox" name="remember-me"> <label
+								for="demo-form-checkbox">Lembrar Usuário</label>
+						</div>
+						<div class="form-group">
+							<input type="hidden" class="form-control" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+						</div>
+						<button class="btn btn-primary btn-lg btn-block">Entrar</button>
+					</form>
+				</div>
+				<div class="pad-all">
+					<a href="#" class="btn btn-link mar-rgt">Esqueceu a senha?</a> <a
+						th:href="@{/cadastro-usuario}" class="btn btn-link mar-lft">Criar nova conta</a>
+				</div>
+			</div>
+		</div>
+		<!--===================================================-->
+
+	</div>
+	<!--===================================================-->
+	<!-- END OF CONTAINER -->
+	<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js}"></script>
+</body>
+</html>

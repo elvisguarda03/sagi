@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/template}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="jumbotron container-fluid" style="background-color: #FFFFFF;">
+        <form class="form-signin" th:method="POST" th:action="@{/equipamento}">
+            <input type="hidden" name="input[token]" id="token" value="{{ form_token() }}">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h6>Data</h6>
+                            <input class="form-control" type="text" readonly="" id="data_cadastro" value="14/03/2019" name="input[acolhido_data]">
+                        </div>
+                        <div class="col-lg-4">
+                            <h6>Hora</h6>
+                            <input class="form-control" type="text" readonly="" id="time" value="18:40" name="input[acolhido_hora]">
+                        </div>
+                        <div class="col-lg-4">
+                            <h6>Usuário</h6>
+                            <input class="form-control" type="text" readonly="" value="Elvis Presley" name="input[acolhido_system_user]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h6>Setor</h6>
+                            <select name="input[setor_id]" id="setor_id" class="form-control">
+                                <option value="">Selecione o Setor</option>
+                                <option value="{{ setor.id }}">Setor 1</option>
+                                <option value="{{ setor.id }}">Setor 2</option>
+                                <option value="{{ setor.id }}">Setor 3</option>
+                                <option value="{{ setor.id }}">Setor 4</option>
+                                <option value="{{ setor.id }}">Setor 5</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <h6>Tipo de Equipamento</h6>
+                            <select name="input[tipo_equipamento]" id="tipo_equipamento" class="form-control">
+                                <option value="">Selecione o Tipo</option>
+                                <option value="{{ setor.id }}">MÃ¡quina de Solda</option>
+                                <option value="{{ setor.id }}">MÃ¡quina de Costura</option>
+                                <option value="{{ setor.id }}">Machado</option>
+                                <option value="{{ setor.id }}">Chave</option>
+                                <option value="{{ setor.id }}">Furadeira</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <h6>Código de Patrimônio</h6>
+                            <input class="form-control" type="number" th:name="@{codigoPatrimonio}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    &nbsp;
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h6>Modelo</h6>
+                            <input class="form-control" type="text" name="input[modelo]" id="modelo">
+                        </div>
+                        <div class="col-lg-4">
+                            <h6>Marca</h6>
+                            <input class="form-control" type="text" name="input[marca]" id="marca">
+                        </div>
+                        <div class="col-lg-4">
+                            <h6>Natureza</h6>
+                            <select name="input[natureza]" id="natureza" class="form-control">
+                                <option value="">Selecione a Natureza</option>
+                                <option value="A">Alugado</option>
+                                <option value="P">Próprio</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    &nbsp;
+                </div>
+            </div>
+
+            <div class="row col-lg-12">
+                <div class="col-lg-6">
+                    <a th:href="@{/equipamento/cadastro-equipamento}" class="btn btn-lg btn-rounded btn-success fa fa-plus" name="btn_novo" id="btn_novo"><i></i> Novo</a>
+                    <button class="btn btn-lg btn-rounded btn-primary" type="submit" name="input[botao]" value="Consultar"><i class="fa fa-search"></i> Pesquisar</button>
+                </div>
+            </div>
+        </form>
+        <div class="card-body">
+            <div class="col-lg-12">
+                <div class="col-lg-12">
+                    &nbsp;
+                </div>
+                <table table="" id="tab_usuarios" class="table table-hover table-lg table-bordered">
+                    <!--<table id="example" class="table table-striped table-bordered" style="width:100%">-->
+                    <thead>
+                    <tr>
+                        <th colspan="1" hidden="hidden" scope="col">ID</th>
+                        <th colspan="1" scope="col">Nome do Equipamento</th>
+                        <th colspan="1" scope="col">Tombamento</th>
+                        <th colspan="1" scope="col">Localização</th>
+                        <th colspan="1" scope="col">Valor</th>
+                        <th colspan="1" scope="col">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- fazer foreach para preencher as opÃ§Ãµes da tabela  -->
+                    <tr th:each="dto : ${equipamentosDto}">
+                        <td colspan="1" hidden="hidden" scope="col" th:text="${dto.id}"></td>
+                        <td colspan="1" scope="col" th:text="${dto.nomeEquipamento}"></td>
+                        <td colspan="1" scope="col" th:text="${dto.codigoPatrimonio}"></td>
+                        <td colspan="1" scope="col" th:text="${dto.laboratorio.localizacao}"></td>
+                        <td colspan="1" scope="col" th:text="${dto.valor}"></td>
+                        <td colspan="1" scope="col">
+                            <p>
+                                <a class="btn btn-primary btn-sm" th:href="@{/equipamento/editar-equipamento/{idEquipamento}(idEquipamento=${dto.id})}"><i class="fas fa-edit"></i> Editar</a>
+                                <buttton type="button" class="btn btn-danger btn-sm delete" id="btnDeletar"><i class="fas fa-trash"></i> Excluir</buttton>
+                            </p>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--  colocar aqui para importar cÃ³digo html do modal -->
+
+    <th:block th:replace="equipamento/modal_delete.html :: modal">
+    </th:block>
+
+</th:block>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $('#btnDeletar').click(function(){
+        $('#modal-body').html();
+        $('#modalDelete').modal("show");
+    });
+</script>

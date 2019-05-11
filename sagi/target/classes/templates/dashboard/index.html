@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/template}">
+<body>
+	<th:block layout:fragment="content">
+		
+		<!-- painel de exibição de solicitações de emprestimo com pesquisa -->
+	
+	<div class="row">
+		        <div class="col-xs-12">
+		            <div class="panel">
+		                <div class="panel-heading">
+		                    <h3 class="panel-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Status do pedido</font></font></h3>
+		                </div>
+		
+		                <!--Data Table-->
+		                <!--===================================================-->
+		                <div class="panel-body">
+		                    <div class="pad-btm form-inline">
+		                        <div class="row">
+		                            <div class="col-sm-3 table-toolbar-left">
+		                                	<div class="input-group mar-btm">
+					                        <input type="text" placeholder="Digite aqui.." class="form-control">
+					                        <span class="input-group-btn">
+					                            <button class="btn btn-mint" type="button">Procure</button>
+					                        </span>
+		                            </div>
+		                        </div>
+		                        <div class="col-sm-3 text-xs-center">
+					                        <div class="form-group">
+					                            <label class="control-label">Filtre por</label>
+					                            <select id="demo-foo-filter-status" class="form-control">
+					                            	<option value="">Todos</option>
+					                                <option value="">Permitido</option>
+					                                <option value="">Completo</option>
+					                                <option value="">Recusado</option>
+					                                <option value="">Solicitado</option>
+					                            </select>
+					                        </div>
+					                    </div>
+		                    </div>
+		                    <hr class="new-section-sm">
+		                    <div class="table-responsive table-bordered">
+		                        <table class="table table-striped" data-page-size="3">
+		                            <thead>
+		                                <tr>
+		                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ID</font></font></th>
+		                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solicitante</font></font></th>
+		                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Data do Pedido</font></font></th>
+		                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Equipamento</font></font></th>
+		                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Para Data</font></font></th>
+		                                    <th class="text-center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Status</font></font></th>
+		                                    <th class="text-center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Ação</font></font></th>
+		                                </tr>
+		                            </thead>
+		                            <tbody>
+		                                <tr>
+		                                    <td><a href="#" class="btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">53434</font></font></a></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Teresa L. Doe</font></font></td>
+		                                    <td><span class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15 de outubro de 2016</font></font></span></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Camera</font></font></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15 de outubro de 2015</font></font></td>
+		                                    <td class="text-center">
+		                                        <div class="label label-table label-info"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Permitido</font></font></div>
+		                                    </td>
+		                                    <td class="text-center"><div class="btn-group dropdown">
+					                                        <button class="btn btn-primary btn-active-primary dropdown-toggle btn-active-success" data-toggle="dropdown" aria-expanded="false">
+					                                        <i class="pli-pen-4"></i>
+					                                        <i class="dropdown-caret"></i>
+					                                    </button>
+					                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
+					                                            <li><a th:href="@{/link/{idSolicitacao}(idSolicitacao=${idDaTabela})}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Permitir</font></font></a></li>
+					                                            <li><a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Recusar</font></font></a></li>
+					                                            <li><a href="solicitacao/index"><button class="btn btn-success">Info</button></a></li>
+					                                        </ul>    
+					                                    </div>
+					                         </td>
+		                                </tr>
+		                                <tr>
+		                                    <td><a href="#" class="btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">53435</font></font></a></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Teresa L. Doe</font></font></td>
+		                                    <td><span class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">12 de outubro de 2014</font></font></span></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">telescopio</font></font></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15 de outubro de 2016</font></font></td>
+		                                    <td class="text-center">
+		                                        <div class="label label-table label-success"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Completo</font></font></div>
+		                                    </td>
+		                                    <td class="text-center"><div class="btn-group dropdown">
+					                                        <button class="btn btn-primary btn-active-primary dropdown-toggle btn-active-success" data-toggle="dropdown" aria-expanded="false">
+					                                        <i class="pli-pen-4"></i>
+					                                        <i class="dropdown-caret"></i>
+					                                    </button>
+					                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
+					                                            <li><a th:href="@{/link/{idSolicitacao}(idSolicitacao=${idDaTabela})}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Permitir</font></font></a></li>
+					                                            <li><a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Recusar</font></font></a></li>
+					                                            <li><a href="solicitacao/index"><button class="btn btn-success">Info</button></a></li>
+					                                        </ul> 
+					                                </div>
+					                         </td>
+		                                </tr>
+		                                <tr>
+		                                    <td><a href="#" class="btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">53437</font></font></a></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Charles S Boyle</font></font></td>
+		                                    <td><span class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">17 de outubro de 2014</font></font></span></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">notebook</font></font></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15 de outubro de 2815</font></font></td>
+		                                    <td class="text-center">
+		                                        <div class="label label-table label-danger"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Recusado</font></font></div>
+		                                    </td>
+		                                    <td class="text-center"><div class="btn-group dropdown">
+					                                        <button class="btn btn-primary btn-active-primary dropdown-toggle btn-active-success" data-toggle="dropdown" aria-expanded="false">
+					                                        <i class="pli-pen-4"></i>
+					                                        <i class="dropdown-caret"></i>
+					                                    </button>
+					                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
+					                                            <li><a th:href="@{/link/{idSolicitacao}(idSolicitacao=${idDaTabela})}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Permitir</font></font></a></li>
+					                                            <li><a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Recusar</font></font></a></li>
+					                                            <li><a href="solicitacao/index"><button class="btn btn-success">Info</button></a></li>
+					                                        </ul> 
+					                                    </div>
+					                         </td>
+		                                </tr>
+		                                <tr>
+		                                    <td><a href="#" class="btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">536584</font></font></a></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Scott S. Calabrese</font></font></td>
+		                                    <td><span class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">19 de outubro de 2014</font></font></span></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">chaveiro</font></font></td>
+		                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15 de outubro de 2*15</font></font></td>
+		                                    <td class="text-center">
+		                                        <div class="label label-table label-warning"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solicitado</font></font></div>
+		                                    </td>
+		                                    <td class="text-center"><div class="btn-group dropdown">
+					                                        <button class="btn btn-primary btn-active-primary dropdown-toggle btn-active-success" data-toggle="dropdown" aria-expanded="false">
+					                                        <i class="pli-pen-4"></i>
+					                                        <i class="dropdown-caret"></i>
+					                                    </button>
+					                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
+					                                            <li><a th:href="@{/link/{idSolicitacao}(idSolicitacao=${idDaTabela})}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Permitir</font></font></a></li>
+					                                            <li><a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Recusar</font></font></a></li>
+					                                            <li><a href="solicitacao/index"><button class="btn btn-success">Info</button></a></li>
+					                                        </ul> 
+					                                    </div>
+					                         </td>
+		                                </tr>
+		                            </tbody>
+		                        </table>
+		                    </div>
+		                    <hr class="new-section-xs">
+		                    <div class="pull-right">
+		                        <ul class="pagination text-nowrap mar-no">
+		                            <li class="page-pre disabled">
+		                                <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&lt;</font></font></a>
+		                            </li>
+		                            <li class="page-number active">
+		                                <span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></span>
+		                            </li>
+		                            <li class="page-number">
+		                                <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></a>
+		                            </li>
+		                            <li class="page-number">
+		                                <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3</font></font></a>
+		                            </li>
+		                            <li>
+		                                <span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">...</font></font></span>
+		                            </li>
+		                            <li class="page-number">
+		                                <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">9</font></font></a>
+		                            </li>
+		                            <li class="page-next">
+		                                <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&gt;</font></font></a>
+		                            </li>
+		                        </ul>
+		                    </div>
+		                </div>
+		                <!--===================================================-->
+		                <!--End Data Table-->
+		
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		
+	</th:block>
+</body>
+</html>
