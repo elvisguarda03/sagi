@@ -5,13 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
+/**
+ * @author Elvis de Sousa
+ */
 
 @Builder
 @Entity
@@ -31,17 +36,33 @@ public class Movimentacao {
     @NotNull
     private Equipamento equipamento;
 
+    @CreatedBy
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    @NotNull
+    private Usuario admin;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    @NotNull
+    private Usuario solicitante;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "localizacao_atual_id", nullable = false)
     @NotNull
     private Laboratorio localizacaoAtual;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "localizacao_anterior_id", nullable = false)
+    @Nullable
+    private Laboratorio localizacaoAnterior;
+
     @Column(name = "data_permissao")
     @CreatedDate
-    private LocalDateTime dataPermissao;
+    private LocalDate dataPermissao;
 
-    @Column(name = "data_devolucao")
     @LastModifiedDate
+    @Column(name = "data_devolucao")
     @Nullable
-    private LocalDateTime dataDevolucao;
+    private LocalDate dataDevolucao;
 }

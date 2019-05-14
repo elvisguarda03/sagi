@@ -146,7 +146,46 @@ public class EquipamentoController extends BaseController {
 	@Transactional
 	@GetMapping("/deletar-equipamento/{idEquipamento}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ModelAndView delete(@PathVariable("idEquipamento") Long id, ModelAndView modelAndView) {
+	public ModelAndView delete(@PathVariable("idEquipamento") Optional<String> record, ModelAndView modelAndView, RedirectAttributes attributes) {
+		if (!IsLogged()) {
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+
+		var actionName = "redirect:/equipamento";
+
+		if (!hasRecord(record, equipamentoRepository, modelAndView, actionName)) {
+			return modelAndView;
+		}
+
+		equipamentoService.deleteById(record.get());
+
+		modelAndView.setViewName(actionName);
+		attributes.addFlashAttribute("", null);
+
+		return modelAndView;
+	}
+
+	@Transactional
+	@GetMapping("/solicita-manutencao/{idEquipamento}")
+	public ModelAndView needMaintenance(@PathVariable("idEquipamento") Optional<String> record, ModelAndView modelAndView, RedirectAttributes attributes) {
+		if (!IsLogged()) {
+			modelAndView.setViewName("redirect:/login");
+			return modelAndView;
+		}
+
+		var actionName = "equipamento/index";
+
+		if (!hasRecord(record, usuarioRepository, modelAndView, actionName)) {
+			return modelAndView;
+		}
+
+		var equipamento = equipamentoService.findById(record.get()).get();
+		equipamentoService.updateStatusMaitenance(equipamento.getId(), equipamento.getIsMaintenance());
+
+		modelAndView.setViewName("redirect:/equipamento");
+		attributes.addFlashAttribute("", null);
+
 		return modelAndView;
 	}
 }

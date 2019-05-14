@@ -71,6 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .key("remember-me")
                     .tokenRepository(persistentTokenRepository())
                     .userDetailsService(userDetailsService);
+
+		http.csrf().disable();
 	}
 	
 	@Override

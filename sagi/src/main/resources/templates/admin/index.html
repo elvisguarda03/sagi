@@ -12,6 +12,9 @@
 		                <div class="panel-heading">
 		                    <h3 class="panel-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solicitações de cadastro</font></font></h3>
 		                </div>
+						<th:block th:if="${not #strings.isEmpty(msg)}">
+							<span class="alert alert-success" th:text="${msg}"></span>
+						</th:block>
 		                <div class="panel-body">
 	   	
 		   					<div class="col-sm-10">

@@ -66,8 +66,19 @@ public class SolicitacaoCadastroController extends BaseController {
 	}
 
 	@GetMapping(value = "/rejeita/usuario/{idUsuario}")
-	public ModelAndView reject(@PathVariable("idUsuario") Optional<UUID> idUsuario, ModelAndView modelAndView) {
-//		Excluir o usuário das solicitações pendentes
+	public ModelAndView reject(@PathVariable("idUsuario") Optional<String> record, ModelAndView modelAndView,
+							   RedirectAttributes attributes) {
+		var actionName = "admin/index";
+
+		if (!hasRecord(record, usuarioRepository, modelAndView, actionName)) {
+			return modelAndView;
+		}
+
+		service.desativar(record.get());
+
+		modelAndView.setViewName("redirect:/admin-solicita-cadastro");
+		attributes.addFlashAttribute("msg", Message.MSG_13.getMessage());
+
 		return modelAndView;
 	}
 }

@@ -72,9 +72,10 @@ public class Usuario {
 	@CreatedDate
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
-	
+
+	@Builder.Default
 	@Column(name = "already_logged_in", nullable = false)
-	private Boolean alreadyLoggedIn;
+	private Boolean alreadyLoggedIn = false;
 	
 	@LastModifiedDate
 	@Column(name = "data_atualizacao")

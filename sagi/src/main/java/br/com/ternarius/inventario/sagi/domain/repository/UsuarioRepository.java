@@ -16,7 +16,8 @@ public interface UsuarioRepository extends Repository {
     Boolean existsByEmail(String email);
     Usuario save(Usuario usuario);
     List<Usuario> findByStatus(StatusUsuario status);
+	Optional<Usuario> findById(String id);
     void updatePassword(String id, String password);
 	void updateStatus(String id, StatusUsuario status);
-	Optional<Usuario> findById(String id);
+    void deleteById(String id);
 }

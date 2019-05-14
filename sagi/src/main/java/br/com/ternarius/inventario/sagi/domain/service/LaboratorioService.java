@@ -29,11 +29,27 @@ public class LaboratorioService {
 		return repository.findAll(pageable);
 	}
 
-	public void cadastrar(Laboratorio laboratorio) {
-		repository.save(laboratorio);
+	public Laboratorio cadastrar(Laboratorio laboratorio) {
+		return repository.save(laboratorio);
 	}
 
-	public void update(Laboratorio laboratorio) {
-		repository.save(laboratorio);
+	public Laboratorio update(Laboratorio laboratorio) {
+		return repository.save(laboratorio);
+	}
+
+	public Boolean existsByLocalizacaoContainingIgnoreCase(String localizacao) {
+		return repository.existsByLocalizacaoContainingIgnoreCase(localizacao);
+	}
+
+	public Laboratorio findByLocalizacao(String localizacao) {
+		return repository.findByLocalizacaoContainingIgnoreCase(localizacao);
+	}
+
+    public Boolean existsById(String id) {
+    	return repository.existsById(id);
+	}
+
+	public void deleteById(String id) {
+		repository.deleteById(id);
 	}
 }

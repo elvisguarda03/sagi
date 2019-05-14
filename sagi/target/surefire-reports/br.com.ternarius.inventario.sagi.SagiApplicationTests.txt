@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: br.com.ternarius.inventario.sagi.SagiApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.821 s - in br.com.ternarius.inventario.sagi.SagiApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 34.18 s - in br.com.ternarius.inventario.sagi.SagiApplicationTests

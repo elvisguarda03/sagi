@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EntityScan(basePackages = {"br.com.ternarius.inventario.sagi.domain.entity", "br.com.ternarius.inventario.sagi.infrastructure.config"})
-@ComponentScan(basePackages = {"br.com.ternarius.*"})
+@EntityScan(basePackages = {"br.com.ternarius.inventario.sagi.domain.entity", "br.com.ternarius.inventario.sagi.infrastructure.security"})
 @EnableJpaRepositories(basePackages = {"br.com.ternarius.inventario.sagi.infrastructure.repository"})
+@ComponentScan(value = "br.com.ternarius.inventario.sagi.*")
 @EnableTransactionManagement
 @EnableJpaAuditing
 @SpringBootApplication

@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/login")
 public class LoginController extends BaseController {
 
-//	Modificar o nome de Tombamento para código de patrimônio
-//	Modificar os dados da localizaçãp, quebrar este campo em dois (Prédio e Andar)
-//	Localização substituido por Prédio e Andar
-	
 	@GetMapping
 	public String login() {
 		if (IsLogged()) {

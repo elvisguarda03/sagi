@@ -2,6 +2,7 @@ package br.com.ternarius.inventario.sagi.application.dto;
 
 import javax.validation.constraints.Size;
 
+import br.com.ternarius.inventario.sagi.infrastructure.security.PasswordsEqual;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@PasswordsEqual
 public class NovaSenhaDto {
 	
 	private String token;

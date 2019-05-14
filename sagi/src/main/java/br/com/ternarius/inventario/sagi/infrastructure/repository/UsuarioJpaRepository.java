@@ -20,10 +20,10 @@ public interface UsuarioJpaRepository
 		extends UsuarioRepository, JpaRepository<Usuario, String>{
 	
 	@Modifying
-	@Query("update Usuario u set u.status = :status where u.id = :id")
+	@Query("UPDATE Usuario u SET u.status = :status WHERE u.id = :id")
 	void updateStatus(@Param("id") String id, @Param("status") StatusUsuario status);
 	
 	@Modifying
-	@Query("update Usuario u set u.senha = :password where u.id = :id")
+	@Query("UPDATE Usuario u SET u.senha = :password WHERE u.id = :id")
 	void updatePassword(@Param("id") String id, @Param("password") String password);
 }

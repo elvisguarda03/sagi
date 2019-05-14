@@ -1,20 +1,16 @@
 package br.com.ternarius.inventario.sagi.domain.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import br.com.ternarius.inventario.sagi.domain.entity.Laboratorio;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  *
@@ -23,13 +19,18 @@ import org.springframework.data.domain.Pageable;
  */
 public interface LaboratorioRepository extends Repository {
 	Laboratorio save(Laboratorio lab);
+	Laboratorio findByLocalizacaoContainingIgnoreCase(String localizacao);
 	Optional<Laboratorio> findById(String id);
     Page<Laboratorio> findAll(Pageable pageable);
 	List<Laboratorio> findAll();
+    boolean existsByLocalizacaoContainingIgnoreCase(String localizacao);
 	void updateLocalizacaoAndEdificioAndAndar(String id, String localizacao, String edificio, Integer andar);
+    void deleteById(String id);
 	void delete(Laboratorio lab);
 
 	default List<Laboratorio> find(String localizacao, String edificio, Integer andar, EntityManager em) {
+		final var pattern = "%";
+
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Laboratorio> query = criteriaBuilder.createQuery(Laboratorio.class);
 		Root<Laboratorio> root = query.from(Laboratorio.class);
@@ -40,15 +41,15 @@ public interface LaboratorioRepository extends Repository {
 
 		List<Predicate> predicates = new ArrayList<>();
 
-		if (!localizacao.isEmpty()) {
-			predicates.add(criteriaBuilder.like(localizacaoPath, localizacao));
+		if (!Objects.isNull(localizacao) && !localizacao.isEmpty()) {
+			predicates.add(criteriaBuilder.like(localizacaoPath, pattern + localizacao + pattern));
 		}
 
-		if (!edificio.isEmpty()) {
-			predicates.add(criteriaBuilder.like(edificioPath, edificio));
+		if (!Objects.isNull(edificio) && !edificio.isEmpty()) {
+			predicates.add(criteriaBuilder.like(edificioPath, pattern + edificio + pattern));
 		}
 
-		if (andar != null) {
+		if (!Objects.isNull(andar)) {
 			predicates.add(criteriaBuilder.equal(andarPath, andar));
 		}
 
@@ -56,4 +57,5 @@ public interface LaboratorioRepository extends Repository {
 
 		return typedQuery.getResultList();
 	}
+
 }

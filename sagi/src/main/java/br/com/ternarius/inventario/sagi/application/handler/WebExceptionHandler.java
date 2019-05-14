@@ -1,6 +1,7 @@
 package br.com.ternarius.inventario.sagi.application.handler;
 
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,12 @@ public class WebExceptionHandler {
         modelAndView.setViewName("redirect:/erro/acesso-negado");
         modelAndView.addObject("erro", exception.getMessage());
 
+        return modelAndView;
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ModelAndView handlerMethodArgumentNotValidException() {
+        ModelAndView modelAndView = new ModelAndView();
         return modelAndView;
     }
 }

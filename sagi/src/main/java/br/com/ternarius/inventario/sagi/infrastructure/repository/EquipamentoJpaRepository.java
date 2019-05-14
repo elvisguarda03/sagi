@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,13 +21,17 @@ import br.com.ternarius.inventario.sagi.domain.repository.EquipamentoRepository;
  */
 @Repository
 public interface EquipamentoJpaRepository 
-		extends EquipamentoRepository, JpaRepository<Equipamento, String> {
+		extends EquipamentoRepository, PagingAndSortingRepository<Equipamento, String> {
 	
 	@Modifying
-	@Query("select e from Equipamento e where e.nomeEquipamento = :nome")
+	@Query("FROM Equipamento e WHERE e.nomeEquipamento = :nome")
 	Optional<Equipamento> findByNomeEquipamento(@Param("nome") String nomeEquipamento);
 
 	@Modifying
-	@Query("select e from Equipamento e inner join e.laboratorio l where l = :lab group by l.localizacao")
+	@Query("UPDATE Equipamento e SET e.isMaintenance = :pIsMaintenance WHERE e.id = :pId")
+	Equipamento updateIsMaintenance(@Param("pId") String id, @Param("pIsMaintenance") Boolean isMaintenance);
+
+	@Modifying
+	@Query("FROM Equipamento e INNER JOIN FETCH e.laboratorio l WHERE l = :lab GROUP BY l.localizacao")
 	List<Equipamento> findAll(@Param("lab") Laboratorio laboratorio);
 }

@@ -14,17 +14,32 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="row">
-							<th:block th:if="${!success}" th:each="e : ${errors}">
-								<p>
-									<span class="alert alert-danger" th:text="${e}"></span>
+							<th:block th:if="${not #maps.isEmpty(errors)}">
+								<p th:if="${#maps.containsKey(errors, 'laboratorio')}">
+									<span class="alert alert-danger" th:text="${errors.get('laboratorio')}"></span>
+								</p>
+								<br/>
+
+								<p th:if="${#maps.containsKey(errors, 'nomeEquipamento')}">
+									<span class="alert alert-danger" th:text="${errors.get('nomeEquipamento')}"></span>
+								</p>
+								<br/>
+
+								<p th:if="${#maps.containsKey(errors, 'valor')}">
+									<span class="alert alert-danger" th:text="${errors.get('valor')}"></span>
+								</p>
+								<br/>
+								<p th:if="${#maps.containsKey(errors, 'descricao')}">
+									<span class="alert alert-danger" th:text="${errors.get('descricao')}"></span>
 								</p>
 								<br/>
 							</th:block>
+
 							<div class="col-lg-4">
                                 <h6>Laboratório</h6>
 								<select th:name="@{laboratorio}" id="dropLaboratorio" required="required" class="form-control" >
                                 	<option th:text="${laboratorioDto.localizacao}" th:value="${laboratorioDto.id}"></option>
-                                	<option th:each="lab : ${laboratoriosDto}" th:if="${!laboratorioDto.localizacao.equals(lab.localizacao)}" th:value="${lab.id}" th:text="${lab.localizacao}"></option>
+                                	<option th:each="lab : ${laboratoriosDto}" th:if="${not #strings.equals(laboratorioDto.localizacao, lab.localizacao)}" th:value="${lab.id}" th:text="${lab.localizacao}"></option>
                                 </select>
 							</div>
 							<div class="col-lg-8">

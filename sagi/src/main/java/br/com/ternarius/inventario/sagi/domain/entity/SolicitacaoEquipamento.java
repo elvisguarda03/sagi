@@ -16,6 +16,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+/**
+ *
+ * @author Elvis de Sousa
+ */
+
 @Builder
 @Entity
 @Data
@@ -33,12 +38,14 @@ public class SolicitacaoEquipamento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comodatario_id", nullable = false)
     private Usuario comodatario;
+//Pessoa(Professor) que solicita o empréstimo
 
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
     @Nullable
     private Usuario comodante;
+//Pessoa(ADMIN) que permite ou nega a solicitação
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipamento_id", nullable = false)
@@ -55,9 +62,9 @@ public class SolicitacaoEquipamento {
 
     @Column(name = "data_solicitacao", nullable = false)
     @CreatedDate
-    public LocalDateTime dataSolicitacao;
+    private LocalDateTime dataSolicitacao;
 
     @Column(name = "data_modificacao")
     @LastModifiedDate
-    public LocalDateTime dataModificacao;
+    private LocalDateTime dataModificacao;
 }

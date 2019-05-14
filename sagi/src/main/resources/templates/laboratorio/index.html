@@ -15,7 +15,6 @@
                 
                 <div class="row">
                     <div class="col-lg-12">
-                    	<p th:if="not #arrays.isEmpty(msgs)" th:each="m : ${msgs}"><span class="alert alert-danger" th:text="${m}"></span></p>
                     	<p th:if="${success}"><span class="alert alert-success">Equipamento editado com sucesso!</span></p>
                         <div class="row">
                             <div class="col-lg-4">
@@ -81,7 +80,7 @@
                                 <tr th:each="dto : ${laboratoriosDto}">
                                     <td hidden="hidden" colspan="1" scope="col" th:text="${dto.id}"></td>
                                     <td colspan="1" scope="col" th:text="${dto.localizacao}"></td>
-                                    <td colspan="1" scope="col" th:text="${dto.edificio}"></td>
+                                    <td colspan="1" scope="col" th:text="${dto.edificio.getEdificio()}"></td>
                                     <td colspan="1" scope="col" th:text="${dto.andar}"></td>
                                     <td colspan="1" scope="col">
                                         <p>

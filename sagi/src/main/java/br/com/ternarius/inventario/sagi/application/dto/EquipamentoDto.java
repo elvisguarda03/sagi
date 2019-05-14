@@ -33,11 +33,11 @@ public class EquipamentoDto {
 	@Nullable
 	private String id;
 	
-	@NotBlank(message = "O nome do equipamento é obrigatório")
+	@NotBlank(message = "O nome do equipamento é obrigatório.")
 	@Pattern(regexp = "/[a-zA-Z\\\\u00C0-\\\\u00FF ]+/i")
 	private String nomeEquipamento;
 	
-	@Range(min = 1, message = "O código de patrimônio não pode conter 0 ou valores negativos")
+	@Range(min = 1, message = "O código de patrimônio não pode conter 0 ou valores negativos.")
 	@Nullable
 	private Long codigoPatrimonio;
 
@@ -45,18 +45,18 @@ public class EquipamentoDto {
 	@Nullable
 	private LocalDate dataAquisicao;
 	
-	@NotNull(message = "Selecione um laboratório")
+	@NotNull(message = "Selecione um laboratório.")
 	private Laboratorio laboratorio;
 	
-	@Range(min = 1, message = "O campo Valor não pode conter 0 ou valores negativos")
-	@Digits(integer = 18, fraction = 2, message = "Campo inválido!\nEx: 10,2")
-	@NotNull(message = "O campo Valor é obrigatório")
+	@Range(min = 1, message = "O campo Valor não pode conter 0 ou valores negativos.")
+	@Digits(integer = 18, fraction = 2, message = "Campo inválido!\nEx: 10,2.")
+	@NotNull(message = "O campo Valor é obrigatório.")
 	private BigDecimal valor;
 	
 	@Nullable
 	private LocalDate dataExclusao;
 	
-	@NotBlank(message = "O campo de descrição é obrigatório")
+	@NotBlank(message = "O campo de descrição é obrigatório.")
 	private String descricao;
 
 	public EquipamentoDto(Equipamento eqp) {

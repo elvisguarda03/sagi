@@ -1,21 +1,20 @@
 package br.com.ternarius.inventario.sagi.application.dto;
 
-import java.util.List;
+import br.com.ternarius.inventario.sagi.domain.entity.Equipamento;
+import br.com.ternarius.inventario.sagi.domain.entity.Laboratorio;
+import br.com.ternarius.inventario.sagi.domain.enums.Edificio;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Range;
-import org.springframework.lang.Nullable;
-
-import br.com.ternarius.inventario.sagi.domain.entity.Equipamento;
-import br.com.ternarius.inventario.sagi.domain.entity.Laboratorio;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
 
 /**
  * 
@@ -27,16 +26,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LaboratorioDto {
-	
 	@Nullable
 	private String id;
 	
 	@NotBlank(message = "A localização é obrigatória.")
-	@Pattern(regexp = "/[a-zA-Z\\\\u00C0-\\\\u00FF ]+/i")
+	@Pattern(regexp = "[^0-9]*", message = "Não é possível inserir números no campo Localização.")
 	private String localizacao;
 	
-	@NotBlank(message = "O campo edifício é obrigatório.")
-	private String edificio;
+	@NotNull(message = "O campo edifício é obrigatório.")
+	private Edificio edificio;
 	
 	@NotNull(message = "O campo andar é obrigatório.")
 	@Range(min = 0, max = 3, message = "Os edificíos só possuem 3 andares.")

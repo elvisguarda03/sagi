@@ -1,14 +1,5 @@
 package br.com.ternarius.inventario.sagi.domain.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import br.com.ternarius.inventario.sagi.application.dto.CadastroDto;
 import br.com.ternarius.inventario.sagi.domain.entity.Usuario;
 import br.com.ternarius.inventario.sagi.domain.entity.UsuarioToken;
 import br.com.ternarius.inventario.sagi.domain.enums.Message;
@@ -21,163 +12,174 @@ import br.com.ternarius.inventario.sagi.infrastructure.config.AppConfig;
 import br.com.ternarius.inventario.sagi.infrastructure.security.SecureRandom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
- * 
  * @author Elvis da Guarda
- *
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CadastroService {
 
-	private final UsuarioTokenRepository usuarioTokenRepository;
-	private final UsuarioRepository usuarioRepository;
-	private final EmailNotificationService notificationService;
-	private final AppConfig config;
+    private final UsuarioTokenRepository usuarioTokenRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final EmailNotificationService notificationService;
+    private final AppConfig config;
 
-	public Notification cadastrar(CadastroDto dto) {
-		final Notification notification = validarSenha(dto);
+    public Notification cadastrar(Usuario usuario) {
+        final Notification notification = validarUsuario(usuario);
 
-		validarUsuario(notification, dto);
+        if (notification.success()) {
+            usuario.criptografarSenha();
 
-		if (notification.success()) {
-			Usuario usuario = dto.toEntity();
-			usuario.setAlreadyLoggedIn(false);
-			usuario.criptografarSenha();
-	
-			usuarioRepository.save(usuario);
-			log.info("Usuário cadastrado!");
-		}
+            usuarioRepository.save(usuario);
+            log.info("Usuário cadastrado!");
+        }
 
-		return notification;
-	}
+        return notification;
+    }
 
-	public void ativar(String id) {
-		Usuario usuario = usuarioRepository.findById(id).get();
-		usuario.setStatus(StatusUsuario.CONFIRMACAO_EMAIL_PENDENTE);
+    public void ativar(String id) {
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setStatus(StatusUsuario.CONFIRMACAO_EMAIL_PENDENTE);
 
-		UsuarioToken usuarioToken = buildToken(usuario);
-		usuarioToken.criptografarToken();
-		usuarioTokenRepository.save(usuarioToken);
+        UsuarioToken usuarioToken = buildToken(usuario);
+        usuarioToken.criptografarToken();
+        usuarioTokenRepository.save(usuarioToken);
 
-		sendConfirmationEmail(usuario.getEmail(), usuarioToken.getToken());
-		log.info("Email enviado!");
-	}
+        sendConfirmationEmail(usuario.getEmail(), usuarioToken.getToken());
+        log.info("Email enviado!");
+    }
 
-	public List<Usuario> findByStatus() {
-		return usuarioRepository.findByStatus(StatusUsuario.CADASTRO_EM_ABERTO);
-	}
+    public void desativar(String id) {
+        var usuario = usuarioRepository.findById(id).get();
+        usuarioRepository.deleteById(id);
 
-	public Notification validarSenha(CadastroDto cadastroDto) {
-		final Notification notification = new Notification();
+        log.info("Solicitação para cadastro do usuário " + usuario.getNome() + " deletada.");
+    }
 
-		if (!cadastroDto.getSenha().equals(cadastroDto.getConfirmacaoSenha())) {
-			notification.addError(Message.MSG_03.getMessage());
-		}
+    public List<Usuario> findByStatus() {
+        return usuarioRepository.findByStatus(StatusUsuario.CADASTRO_EM_ABERTO);
+    }
 
-		return notification;
-	}
+    public Notification validarSenha(String senha, String confirmacaoSenha) {
+        final Notification notification = new Notification();
 
-	private void validarUsuario(Notification notification, CadastroDto dto) {
-		if (Objects.isNull(dto)) {
-			notification.addError(Message.MSG_07.getMessage());
-			return;
-		}
+        if (!senha.equals(confirmacaoSenha)) {
+            notification.addError(Message.MSG_03.getMessage());
+        }
 
-		if (usuarioRepository.existsByEmail(dto.getEmail())) {
-			notification.addError(Message.MSG_08.getMessage());
-		}
-	}
+        return notification;
+    }
 
-	public void sendConfirmationEmail(final String email, final String token) {
-		Usuario u = usuarioRepository.findByEmail(email).get();
+    private Notification validarUsuario(Usuario usuario) {
+        final var notification = new Notification();
+        if (Objects.isNull(usuario)) {
+            notification.addError(Message.MSG_07.getMessage());
+            return notification;
+        }
 
-		String url = config.getUrl() + "/validar?email=" + email + "&token=" + token;
+        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+            notification.addError(Message.MSG_08.getMessage());
+        }
 
-		EmailNotification pushNotification = EmailNotification.builder()
-				.from("sagi@gmail.com")
-				.to(u.getEmail())
-				.title("Conta foi validada pelo Admin do sistema")
-				.message("A sua conta já está efetivada, para efetuar o primeiro login no sistema acesse o link.")
-				.url(url)
-				.build();
+        return notification;
+    }
 
-		notificationService.send(pushNotification);
-	}
+    public void sendConfirmationEmail(final String email, final String token) {
+        Usuario u = usuarioRepository.findByEmail(email).get();
 
-	@Transactional
-	public Notification ativarUsuario(final String email, final String token) {
-		final Notification notification = validar(email, token);
+        String url = config.getUrl() + "/validar?email=" + email + "&token=" + token;
 
-		if (notification.fail()) {
-			return notification;
-		}
+        EmailNotification pushNotification = EmailNotification.builder()
+                .from("sagi@gmail.com")
+                .to(u.getEmail())
+                .title("Conta foi validada pelo Admin do sistema")
+                .message("A sua conta já está efetivada, para efetuar o primeiro login no sistema acesse o link.")
+                .url(url)
+                .build();
 
-		Usuario user = usuarioRepository.findByEmail(email).get();
-		UsuarioToken usuarioToken = usuarioTokenRepository.findByToken(token).get();
+        notificationService.send(pushNotification);
+    }
 
-		usuarioRepository.updateStatus(user.getId(), StatusUsuario.EMAIL_VALIDADO);
-		usuarioTokenRepository.delete(usuarioToken);
+    @Transactional
+    public Notification ativarUsuario(final String email, final String token) {
+        final Notification notification = validar(email, token);
 
-		log.info("Usuário ativado!");
-		
-		return notification;
-	}
+        if (notification.fail()) {
+            return notification;
+        }
 
-	public Notification validar(String email, String token) {
-		final Notification notification = validarEmail(email);
+        Usuario user = usuarioRepository.findByEmail(email).get();
+        UsuarioToken usuarioToken = usuarioTokenRepository.findByToken(token).get();
 
-		if (notification.fail()) {
-			return notification;
-		}
+        usuarioRepository.updateStatus(user.getId(), StatusUsuario.EMAIL_VALIDADO);
+        usuarioTokenRepository.delete(usuarioToken);
 
-		validarToken(notification, token);
-		return notification;
-	}
+        log.info("Usuário ativado!");
 
-	public Notification validarEmail(String email) {
-		final Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+        return notification;
+    }
 
-		final Notification notification = new Notification();
+    public Notification validar(String email, String token) {
+        final Notification notification = validarEmail(email);
 
-		if (!usuario.isPresent()) {
-			notification.addError(Message.MSG_09.getMessage());
-		}
+        if (notification.fail()) {
+            return notification;
+        }
 
-		return notification;
-	}
+        validarToken(notification, token);
+        return notification;
+    }
 
-	public Optional<UsuarioToken> validarToken(final Notification notification, String token) {
-		final Optional<UsuarioToken> registro = usuarioTokenRepository.findByToken(token);
+    public Notification validarEmail(String email) {
+        final Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
 
-		if (!validarTokenAtivo(registro)) {
-			notification.addError(Message.MSG_10.getMessage());
-			return null;
-		}
+        final Notification notification = new Notification();
 
-		return registro;
-	}
+        if (!usuario.isPresent()) {
+            notification.addError(Message.MSG_09.getMessage());
+        }
 
-	public List<Usuario> findByStatusCadastroEmAberto() {
-		return usuarioRepository.findByStatus(StatusUsuario.CADASTRO_EM_ABERTO);
-	}
+        return notification;
+    }
 
-	private UsuarioToken buildToken(Usuario user) {
-		final UsuarioToken usuarioToken = UsuarioToken.builder()
-				.usuario(user)
-				.dataExpiracao(LocalDateTime.now().plusHours(24))
-				.token(SecureRandom.hex())
-				.build();
+    public Optional<UsuarioToken> validarToken(final Notification notification, String token) {
+        final Optional<UsuarioToken> registro = usuarioTokenRepository.findByToken(token);
 
-		usuarioToken.criptografarToken();
-		usuarioTokenRepository.save(usuarioToken);
+        if (!validarTokenAtivo(registro)) {
+            notification.addError(Message.MSG_10.getMessage());
+            return null;
+        }
 
-		return usuarioToken;
-	}
-	
-	private boolean validarTokenAtivo(Optional<UsuarioToken> registro) {
-		return registro.isPresent() && registro.get().ativo();
-	}
+        return registro;
+    }
+
+    public List<Usuario> findByStatusCadastroEmAberto() {
+        return usuarioRepository.findByStatus(StatusUsuario.CADASTRO_EM_ABERTO);
+    }
+
+    private UsuarioToken buildToken(Usuario user) {
+        final UsuarioToken usuarioToken = UsuarioToken.builder()
+                .usuario(user)
+                .dataExpiracao(LocalDateTime.now().plusHours(24))
+                .token(SecureRandom.hex())
+                .build();
+
+        usuarioToken.criptografarToken();
+        usuarioTokenRepository.save(usuarioToken);
+
+        return usuarioToken;
+    }
+
+    private boolean validarTokenAtivo(Optional<UsuarioToken> registro) {
+        return registro.isPresent() && registro.get().ativo();
+    }
 }

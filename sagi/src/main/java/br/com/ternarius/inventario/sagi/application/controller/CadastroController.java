@@ -2,6 +2,7 @@ package br.com.ternarius.inventario.sagi.application.controller;
 
 import javax.validation.Valid;
 
+import br.com.ternarius.inventario.sagi.domain.enums.Message;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,21 +47,22 @@ public class CadastroController extends BaseController {
 			RedirectAttributes attributes, ModelAndView modelAndView) {
 		if (hasErrors(result, modelAndView)) {
 			modelAndView.setViewName("login/cadastro-usuario");
-			modelAndView.addObject("dto", dto);
+			modelAndView.addObject("dto ", dto);
 			
 			return modelAndView;
 		}
-		
-		final Notification notification = service.cadastrar(dto);
+
+		final Notification notification = service.cadastrar(dto.toEntity());
 		
 		if (notification.fail()) {
-			modelAndView.addObject("msgError", notification.getFirstError());
 			modelAndView.setViewName("login/cadastro-usuario");
+			modelAndView.addObject("msgError", notification.getFirstError());
+
 			return modelAndView;
 		}
 		
 		modelAndView.setViewName("redirect:/cadastro-usuario");
-		attributes.addFlashAttribute("msg", "A solicitação para validação da sua conta foi enviado para o admin do sistema.");
+		attributes.addFlashAttribute("msg", Message.MSG_14.getMessage());
 		
 		return modelAndView;
 	}
