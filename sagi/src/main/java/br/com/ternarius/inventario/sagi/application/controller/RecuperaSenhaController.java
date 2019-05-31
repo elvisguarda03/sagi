@@ -34,7 +34,7 @@ public class RecuperaSenhaController extends BaseController {
 			return modelAndView;
 		}
 		
-		modelAndView.setViewName("login/recupera-senha");
+		modelAndView.setViewName("login/esqueci-senha");
 		modelAndView.addObject("dto", new RecuperaSenhaDto());
 		
 		return modelAndView;
@@ -44,7 +44,7 @@ public class RecuperaSenhaController extends BaseController {
 	public ModelAndView create(@Valid @ModelAttribute("dto") RecuperaSenhaDto dto, BindingResult result,
 			ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 		if (hasErrors(result, modelAndView)) {
-			modelAndView.setViewName("redirect:/login/recupera-senha");
+			modelAndView.setViewName("login/esqueci-senha");
 			modelAndView.addObject("dto", dto);
 
 			return modelAndView;
@@ -53,17 +53,20 @@ public class RecuperaSenhaController extends BaseController {
 		final var notification = service.recuperarSenha(dto.getEmail());
 		
 		if (notification.fail()) {
-			redirectAttributes.addFlashAttribute("msg", notification.getFirstError());
-			modelAndView.setViewName("redirect:/login/recupera-senha");
+			modelAndView.addObject("error,", true);
+			modelAndView.addObject("msg", notification.getFirstError());
+
+			modelAndView.setViewName("login/esqueci-senha");
+
 			return modelAndView;
 		}
 		
-		modelAndView.setViewName("redirect:/login/recupera-senha?sucesso");
-		modelAndView.addObject("dto", new RecuperaSenhaDto());
-		
-		String msg = "Acabamos de enviar um e-mail com um link para você reestabelecer a sua senha.\n" + dto.getEmail()
+		modelAndView.setViewName("redirect:/esqueci-minha-senha");
+
+		var msg = "Acabamos de enviar um e-mail com um link para você reestabelecer a sua senha.\n" + dto.getEmail()
 		+ "\nIMPORTANTE! Lembre-se de verificar a pasta \"lixo\" e \"correio não desejado\".";
 
+		redirectAttributes.addFlashAttribute("success", true);
 		redirectAttributes.addFlashAttribute("msg", msg);
 		
 		return modelAndView;

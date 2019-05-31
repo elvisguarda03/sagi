@@ -2,15 +2,11 @@ package br.com.ternarius.inventario.sagi.infrastructure.service;
 
 import java.io.IOException;
 
+import br.com.ternarius.inventario.sagi.infrastructure.config.DynamicTemplatePersonalization;
+import com.sendgrid.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import com.sendgrid.Content;
-import com.sendgrid.Email;
-import com.sendgrid.Mail;
-import com.sendgrid.Method;
-import com.sendgrid.Request;
-import com.sendgrid.SendGrid;
 
 import br.com.ternarius.inventario.sagi.domain.service.EmailNotificationService;
 import br.com.ternarius.inventario.sagi.domain.valueobject.EmailNotification;
@@ -23,27 +19,34 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Service
+@Slf4j
 @Qualifier
 @RequiredArgsConstructor
 public class SendGridEmailNotificationServiceImpl implements EmailNotificationService {
 	
 	private final SendGridConfig sendConfig;
-	
+
 	@Override
 	public void send(EmailNotification notification) {
 		try {
-			Email from = new Email(notification.getFrom());
-			Email to = new Email(notification.getTo());
-			Content content = new Content("text/plain", notification.getMessage() + "\n"
-					+ notification.getUrl());
-			Mail mail = new Mail(from, notification.getTitle(), to, content);
-			Request rq = new Request();
+			var from = new Email(notification.getFrom());
+			var to = new Email(notification.getTo());
+
+			var content = new Content("text/plain", notification.getMessage() + notification.getUrl());
+
+			var mail = new Mail(from, notification.getTitle(), to, content);
+			mail.setReplyTo(from);
+
+			var rq = new Request();
 			rq.setMethod(Method.POST);
 			rq.setEndpoint("mail/send");
 			rq.setBody(mail.build());
-			SendGrid sendGridClient = new SendGrid(sendConfig.getSendGridAPIKey());
-			sendGridClient.api(rq);
-		} catch (IOException e) {
+
+			var sendGridClient = new SendGrid(sendConfig.getSendGridAPIKey());
+			var response = sendGridClient.api(rq);
+
+			log.info("" + response.getStatusCode());
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

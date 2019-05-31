@@ -2,179 +2,119 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/template}">
+      layout:decorate="~{fragments/template}">
+<head>
+    <th:block layout:fragment="limitless">
+        <link th:href="@{/bootstrap/css/bootstrap_limitless.min.css}" rel="stylesheet">
+    </th:block>
+</head>
+
 <body>
-    <th:block layout:fragment="content">
-        <div class="jumbotron container-fluid" style="background-color: #FFFFFF;">
-            <form class="form-signin" method="post" action="indexEquipamento">
-    
-                <input type="hidden" name="input[token]" id="token" value="{{ form_token() }}">
-                
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <h6>Data</h6>
-                                <input class="form-control" type="text" readonly="" id="data_cadastro" value="14/03/2019" name="input[acolhido_data]"> 
-                            </div>
-                            <div class="col-lg-4">
-                                <h6>Hora</h6>
-                                <input class="form-control" type="text" readonly="" id="time" value="18:40" name="input[acolhido_hora]">
-                            </div>
-                            <div class="col-lg-4">
-                                <h6>Usu�rio</h6>
-                                <input class="form-control" type="text" readonly="" value="Elvis Presley" name="input[acolhido_system_user]">
+<th:block layout:fragment="content">
+    <!--
+        NIVEIS DE ACESSO PARA USUARIO:
+        ADMINISTRADOR
+        MODERADOR
+        USUARIO
+    -->
+
+    <!-- Painel de exibição de usuario -->
+    <!----------------------------------->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-bordered-mint">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><font style="vertical-align: inherit;"><font
+                            style="vertical-align: inherit;">Status do pedido</font></font></h3>
+                </div>
+
+                <div class="panel-body">
+                    <div class="col-sm-4 col-md-3" th:each="u : ${usuarios}">
+                        <div  class="panel panel-bordered-primary pos-rel ">
+                            <div class="pad-all">
+                                <div class="media pad-ver">
+                                    <!-- Exibição de imagem do usuario -->
+                                    <div class="media-left">
+                                        <a href="#" class="box-inline"><img class="img-circle img-md" src="/resources/images/profile-photos/1.png" alt="Profile Picture"></a>
+                                    </div>
+                                    <!--  Fim exibição de imagem do usuario-->
+                                    <div class="media-body pad-top">
+                                        <a href="#" class="box-inline">
+                                            <!-- Nome usuario -->
+                                            <span class="text-lg text-semibold text-main" th:text="${u.nome}"> Nome usuario  </span>
+                                            <!-- FIM -->
+                                            <!-- Nivel de acesso -->
+                                            <p class="text-sm" th:text="${u.tipoUsuario.tipo}"> Nivel de acesso </p>
+                                            <!-- FIM -->
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- E-mail do usuario -->
+                                <p class="pad-btm bord-bt text-sm" th:text="${u.email}"></p>
+                                <!-- fim -->
+                                <div class="text-center pad-to">
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-default" data-target="#modaledituser" th:attr="onclick=|editarNivelAcesso('${u.id}')|" type="button"
+                                           id="btnacesso"><i
+                                                class="demo-pli-consulting icon-lg icon-fw"></i> Editar Nivel de acesso</a>
+                                        <a class="btn btn-sm btn-default" th:attr="onclick=|deletar('${u.id}')|" data-target="#modalDeletarUser" type="button"
+                                           id="btndelete"><i class="demo-pli-consulting icon-lg icon-fw"></i> Excluir usuario</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <br>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <h6>Setor</h6>
-                                <select name="input[setor_id]" id="setor_id" class="form-control">
-                                    <option value="">Selecione o Setor</option>
-                                            <option value="{{ setor.id }}">Setor 1</option>
-                                            <option value="{{ setor.id }}">Setor 2</option>
-                                            <option value="{{ setor.id }}">Setor 3</option>
-                                            <option value="{{ setor.id }}">Setor 4</option>
-                                            <option value="{{ setor.id }}">Setor 5</option>
-                               </select>
-                            </div>
-                            <div class="col-lg-4">
-                                <h6>Tipo de Equipamento</h6>
-                                <select name="input[tipo_equipamento]" id="tipo_equipamento" class="form-control">
-                                    <option value="">Selecione o Tipo</option>
-                                            <option value="{{ setor.id }}">M�quina de Solda</option>
-                                            <option value="{{ setor.id }}">M�quina de Costura</option>
-                                            <option value="{{ setor.id }}">Machado</option>
-                                            <option value="{{ setor.id }}">Chave</option>
-                                            <option value="{{ setor.id }}">Furadeira</option>
-                                </select>   
-                            </div>
-                            <div class="col-lg-4">
-                                <h6>Tombamento</h6>
-                                <input class="form-control" type="text" id="tombamento" name="input[tombamento]"> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        &nbsp;
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <h6>Modelo</h6>
-                                <input class="form-control" type="text" name="input[modelo]" id="modelo">
-                            </div>
-                            <div class="col-lg-4">
-                                <h6>Marca</h6>
-                                <input class="form-control" type="text" name="input[marca]" id="marca">
-                            </div>
-                            <div class="col-lg-4">
-                                <h6>Natureza</h6>
-                                <select name="input[natureza]" id="natureza" class="form-control">
-                                    <option value="">Selecione a Natureza</option>
-                                    <option value="A">Alugado</option>
-                                    <option value="P">Pr�prio</option>
-                                </select>   
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        &nbsp;
-                    </div>
-                </div>
-
-                <div class="row col-lg-12">
-                    <div class="col-lg-6">
-                        <a href="nome da fun��o novo equipamento" class="btn btn-lg btn-rounded btn-success fa fa-plus" name="btn_novo" id="btn_novo"><i></i> Novo</a>
-                        <button class="btn btn-lg btn-rounded btn-primary" type="submit" name="input[botao]" value="Consultar" "=""><i class="fa fa-search"></i> Pesquisar</button>
-                    </div>
-                </div>
-            </form> 
-            <div class="card-body">
-                <div class="col-lg-12">
-                    <div class="col-lg-12">
-                        &nbsp;
-                    </div>
-                        <table id="tab_usuarios" class="table table-hover table-lg table-bordered">
-                        <!--<table id="example" class="table table-striped table-bordered" style="width:100%">-->
-                            <thead>
-                                <tr>
-                                    <th colspan="1" scope="col">ID</th>
-                                    <th colspan="1" scope="col">Nome do Equipamento</th>
-                                    <th colspan="1" scope="col">C�digo de Patrim�nio</th>
-                                    <th colspan="1" scope="col">Laborat�rio</th>
-                                    <th colspan="1" scope="col">Valor</th>
-                                    <th colspan="1" scope="col">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- fazer foreach para preencher as opções da tabela  -->
-                                <tr>
-                                    <td colspan="1" scope="col">1</td>
-                                    <td colspan="1" scope="col">FURAKAWA</td>
-                                    <td colspan="1" scope="col">123</td>
-                                    <td colspan="1" scope="col">CABO DE REDE 5M</td>
-                                    <td colspan="1" scope="col">CIMATEC 3</td>
-                                    <td colspan="1" scope="col">
-                                        <p>
-                                                <a class="btn btn-primary btn-sm" href="{{URL_DEFAULT}}/equipamento/editarEquipamento?id={{equipamento.id}}"><i class="fas fa-edit"></i> Editar</a>
-                                                <a class="btn btn-danger btn-sm" href="{{URL_DEFAULT}}/equipamento/deletarEquipamento?id={{equipamento.id}}"><i class="fas fa-trash"></i> Excluir</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="1" scope="col">2</td>
-                                    <td colspan="1" scope="col">3214</td>
-                                    <td colspan="1" scope="col">TOSHIBA</td>
-                                    <td colspan="1" scope="col">MEDIDOR</td>
-                                    <td colspan="1" scope="col">CIMATEC 2</td>
-                                    <td colspan="1" scope="col">
-                                        <p>
-                                                <a class="btn btn-primary btn-sm" href="{{URL_DEFAULT}}/equipamento/editarEquipamento?id={{equipamento.id}}"><i class="fas fa-edit"></i> Editar</a>
-                                                <a class="btn btn-danger btn-sm"  data-toggle="modal" book-id="{{usuario.id}}"  id-usuario="{{usuario.id}}" data-target="#modalDelete" href="{{URL_DEFAULT}}/equipamento/deletarEquipamento?id={{equipamento.id}}"><i class="fas fa-trash"></i> Excluir</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>    
-                    </div>
+                <div class="panel-footer text-center bg-light">
+                    <nav aria-label="Paginação">
+                        <ul class="pagination justify-content-center font-weight-bold">
+                            <li class="page-item" >
+                                <a class="page-link" aria-label="Anterior" title="Página Anterior" data-toggle="tooltip">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" ></a>
+                            </li>
+                            <li class="page-item" >
+                                <a class="page-link" href="#">
+                                    <span data-feather="more-horizontal" width="20" height="20"></span>
+                                </a>
+                            </li>
+                            <li class="page-item" >
+                                <a class="page-link" aria-label="Próximo" title="Página Seguinte" data-toggle="tooltip">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
+        </div>
+        <!------------------------------------->
+        <!--Fim Painel de exibição de usuario-->
+        <th:block th:replace="usuario/excluir-usuario.html :: modal">
+        </th:block>
 
-                <!--  colocar aqui para importar c�digo html do modal -->
-    </th:block>
+        <th:block th:replace="usuario/editar-acesso.html :: modal">
+        </th:block>
+
+</th:block>
 </body>
 </html>
 
 <script type="text/javascript">
-    
-        $('.delete').click(function(){  
-               var id = $(this).attr("book-id"); 
-              $.ajax({  
-                    url:"buscarDadosUsuario",  
-                    method:"get",  
-                    data:{
-                        id: id,
-                    },  
-                    success:function(data){  
-                         $('#modal-body').html(data);  
-                         $('#modalAlterarSenha').modal("show");  
-                    }  
-               });
-        });  
+    function deletar(idUsuario) {
+        $('#modal-body').html();
+        $('#modal-deletar-usuario-id').val(idUsuario);
+        $('#modalDeletarUser').modal("show");
+    };
+</script>
 
+<script type="text/javascript">
+    function editarNivelAcesso(idUsuario) {
+        $('#modal-body').html();
+        $('#modal-editarAcesso-usuario-id').val(idUsuario);
+        $('#modalEditarAcesso').modal("show");
+    };
 </script>

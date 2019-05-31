@@ -28,6 +28,14 @@ public class EquipamentoService {
     private final EquipamentoRepository equipamentoRepository;
 
     public Equipamento cadastrar(Equipamento equipamento) {
+        if (equipamentoRepository.existsByCodigoPatrimonio(equipamento.getCodigoPatrimonio())) {
+            equipamento = equipamentoRepository.findByCodigoPatrimonio(equipamento.getCodigoPatrimonio());
+            equipamento.setIsDelete(false);
+
+            update(equipamento);
+
+            return equipamento;
+        }
         return equipamentoRepository.save(equipamento);
     }
 
@@ -40,7 +48,7 @@ public class EquipamentoService {
     }
 
     public List<Equipamento> findAll() {
-        return equipamentoRepository.findAll();
+        return equipamentoRepository.findAll(false);
     }
 
     public Optional<Equipamento> findById(String id) {
@@ -51,8 +59,11 @@ public class EquipamentoService {
         return equipamentoRepository.findByStatus(true);
     }
 
-    public void deleteById(String idEquipamento) {
-        equipamentoRepository.deleteById(idEquipamento);
+    public void unavailable(String idEquipamento) {
+        var equipamento = equipamentoRepository.findById(idEquipamento).get();
+        equipamento.setIsDelete(true);
+
+        equipamentoRepository.save(equipamento);
     }
 
     public Boolean existsById(String idEquipamento) {
@@ -70,4 +81,5 @@ public class EquipamentoService {
     public Equipamento updateStatusMaitenance(String id, Boolean isMaintenance) {
         return equipamentoRepository.updateIsMaintenance(id, isMaintenance);
     }
+
 }

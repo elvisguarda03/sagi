@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmailNotification {
+    private String nome;
     private String from;
     private String to;
     private String title;

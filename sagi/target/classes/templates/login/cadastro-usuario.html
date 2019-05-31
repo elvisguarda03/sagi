@@ -2,79 +2,79 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/template}">
-<head>
-    <meta charset="UTF-8">
-</head>
+      layout:decorate="~{fragments/templateLogin}">
+<th:block layout:fragment="title">
+    <title>SAGI Basic SENAI | Cadastro do Usuário</title>
+</th:block>
 <body>
 <th:block layout:fragment="content">
-    <div class="jumbotron container-fluid" style="background-color: #FFFFFF;">
-        <form class="form-signin" th:method="POST" th:object="${dto}" th:action="@{/cadastro-usuario}">
-            <!-- preencher o mÃ©todo submit -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <th:block th:if="${not #maps.isEmpty(errors)}">
-                        <p th:if="${#maps.containsKey(errors, 'nome')}"><span class="alert alert-danger"
-                                                                              th:text="${errors.get('nome')}"></span>
-                        </p>
-                        <p th:if="${#maps.containsKey(errors, 'email')}"><span class="alert alert-danger"
-                                                                               th:text="${errors.get('email')}"></span>
-                        </p>
-                        <p th:if="${#maps.containsKey(errors, 'senha')}"><span class="alert alert-danger"
-                                                                               th:text="${errors.get('senha')}"></span>
-                        </p>
-                    </th:block>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <h6>E-mail</h6>
-                            <input class="form-control" type="email" th:field="*{email}" th:name="@{email}">
-                        </div>
-                        <div class="col-lg-4">
-                            <h6>Senha</h6>
-                            <input class="form-control" type="password" th:field="*{senha}" th:name="@{senha}">
-                        </div>
-                        <div class="col-lg-4">
-                            <h6>Confirmar Senha</h6>
-                            <input class="form-control" type="password" th:field="*{confirmacaoSenha}"
-                                   th:name="@{confirmacaoSenha}">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <h6>Nome</h6>
-                            <input class="form-control" type="text" th:field="*{nome}" th:name="@{nome}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    &nbsp;
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-lg-12">
-                    &nbsp;
-                </div>
-            </div>
-
-
-            <div class="row col-lg-12">
-                <div class="col-lg-6">
-                    <button class="btn btn-lg btn-rounded btn-success fa fa-plus" type="submit"><i></i> Cadastrar
-                    </button>
-                    <a type="button" class="btn btn-lg btn-rounded btn-danger" th:href="@{/login}"><i
-                            class="fa fa-search"></i> Cancelar</a>
-                </div>
-            </div>
-        </form>
+    <div class="mar-ver pad-btm">
+        <span class="h3">Cadastro de Usuário</span>
     </div>
+    <form class="form-signin text-left" th:method="POST" th:object="${dto}" th:action="@{/cadastro-usuario}">
+        <th:block th:if="${success eq true}">
+            <p class="text-success" th:text="${msg}"></p>
+        </th:block>
+        <div class="form-group">
+            <h6>Nome e Sobrenome</h6>
+            <input type="text" class="form-control"
+                   th:classappend="${not #maps.isEmpty(errors) and #maps.containsKey(errors, 'nome')} ? 'panel-bordered-danger'"
+                   placeholder="Nome e Sobrenome" name="nome"
+                   autofocus="" required>
+            <th:block th:if="${not #maps.isEmpty(errors)}">
+                <th:block th:if="${#maps.containsKey(errors, 'nome')}">
+                    <p class="text-danger" th:text="${errors.get('nome')}"></p>
+                </th:block>
+            </th:block>
+        </div>
+        <div class="form-group">
+            <h6>Email</h6>
+            <input type="email" class="form-control"
+                   th:classappend="${not #maps.isEmpty(errors) and #maps.containsKey(errors, 'email') or error eq true} ? 'panel-bordered-danger'"
+                   placeholder="Email do usuário" name="email"
+                   autofocus="" required>
+            <th:block th:if="${not #maps.isEmpty(errors)}">
+                <th:block th:if="${#maps.containsKey(errors, 'email')}">
+                    <p class="text-danger" th:text="${errors.get('email')}"></p>
+                </th:block>
+            </th:block>
+            <th:block th:if="${#bools.isTrue(error)}">
+                <p class="text-danger" th:text="${msg}"></p>
+            </th:block>
+        </div>
+        <div class="form-group">
+            <h6>Senha</h6>
+            <input type="password" class="form-control"
+                   th:classappend="${not #maps.isEmpty(errors) and #maps.containsKey(errors, 'senha')} ? 'panel-bordered-danger'"
+                   placeholder="Digite a sua senha" name="senha"
+                   autofocus="" required>
+            <th:block th:if="${not #maps.isEmpty(errors)}">
+                <th:block th:if="${#maps.containsKey(errors, 'senha')}">
+                    <p class="text-danger" th:text="${errors.get('senha')}"></p>
+                </th:block>
+            </th:block>
+        </div>
+        <div class="form-group">
+            <h6>Confirmar Senha</h6>
+            <input type="password" class="form-control"
+                   th:classappend="${not #maps.isEmpty(errors) and #maps.containsKey(errors, 'confirmacaoSenha')} ? 'panel-bordered-danger'"
+                   placeholder="Confirme a senha" name="confirmacaoSenha"
+                   autofocus="" required>
+            <th:block th:if="${not #maps.isEmpty(errors)}">
+                <th:block th:if="${#maps.containsKey(errors, 'confirmacaoSenha')}">
+                    <p class="text-danger" th:text="${errors.get('confirmacaoSenha')}"></p>
+                </th:block>
+            </th:block>
+        </div>
+
+        <div class="form-group">
+            <input type="hidden" class="form-control" name="${_csrf.parameterName}"
+                   value="${_csrf.token}"/>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block">Enviar</button>
+        <br>
+        <a type="button" class="btn btn-danger btn-lg btn-block" th:href="@{/login}">Voltar para o login</a>
+    </form>
 </th:block>
 </body>
 </html>

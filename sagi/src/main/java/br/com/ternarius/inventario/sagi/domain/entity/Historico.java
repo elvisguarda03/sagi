@@ -1,28 +1,19 @@
 package br.com.ternarius.inventario.sagi.domain.entity;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
- * 
  * @author Elvis da Guarda
- *
  */
 @Data
 @Builder
@@ -30,20 +21,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Historico implements java.io.Serializable {
-	private static final long serialVersionUID = 1L;
+public class Historico {
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
 
-	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(
-			name = "UUID",
-			strategy = "org.hibernate.id.UUIDGenerator")
-	private String id;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Equipamento equipamento;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Equipamento equipamento;
 
-	@LastModifiedDate
-	@Column(name = "data_modificacao")
-	private LocalDateTime ultimaModificacao;
+    @CreatedDate
+    @Column(name = "data_criacao", nullable = false)
+    private LocalDateTime dataCriacao;
+
+    @LastModifiedDate
+    @Column(name = "data_modificacao")
+    private LocalDateTime ultimaModificacao;
 }

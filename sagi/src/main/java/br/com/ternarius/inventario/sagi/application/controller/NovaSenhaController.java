@@ -51,8 +51,9 @@ public class NovaSenhaController extends BaseController {
 	public ModelAndView update(@Valid @ModelAttribute("dto") NovaSenhaDto dto, BindingResult result,
 			ModelAndView modelAndView, RedirectAttributes attributes) {
 		if (hasErrors(result, attributes)) {
+			modelAndView.addObject("dto", dto);
 			modelAndView.setViewName("login/nova-senha");
-			
+
 			return modelAndView;
 		}
 		
@@ -60,11 +61,14 @@ public class NovaSenhaController extends BaseController {
 
 		if (notification.fail()) {
 			modelAndView.addObject("erro", notification.getFirstError());
+			modelAndView.addObject("dto", dto);
+
 			modelAndView.setViewName("login/nova-senha");
+
 			return modelAndView;
 		}
 		
-		modelAndView.setViewName("redirect:/login?resetada");
+		modelAndView.setViewName("redirect:/login?resetada=true");
 		
 		log.info("Senha redefinida!");
 		

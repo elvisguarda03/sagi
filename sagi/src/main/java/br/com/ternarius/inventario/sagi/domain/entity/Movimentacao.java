@@ -15,7 +15,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
+ *
  * @author Elvis de Sousa
+ *
  */
 
 @Builder

@@ -1,23 +1,21 @@
 package br.com.ternarius.inventario.sagi.application.dto;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Range;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
-
 import br.com.ternarius.inventario.sagi.domain.entity.Equipamento;
 import br.com.ternarius.inventario.sagi.domain.entity.Laboratorio;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * 
@@ -34,7 +32,7 @@ public class EquipamentoDto {
 	private String id;
 	
 	@NotBlank(message = "O nome do equipamento é obrigatório.")
-	@Pattern(regexp = "/[a-zA-Z\\\\u00C0-\\\\u00FF ]+/i")
+	@Pattern(regexp = "[^0-9]*", message = "Não é possível inserir números no campo Nome Equipamento.")
 	private String nomeEquipamento;
 	
 	@Range(min = 1, message = "O código de patrimônio não pode conter 0 ou valores negativos.")
@@ -52,11 +50,14 @@ public class EquipamentoDto {
 	@Digits(integer = 18, fraction = 2, message = "Campo inválido!\nEx: 10,2.")
 	@NotNull(message = "O campo Valor é obrigatório.")
 	private BigDecimal valor;
-	
+
+	@NotNull(message = "O campo Status é obrigatório.")
+	private Boolean statusEquipamento;
+
 	@Nullable
 	private LocalDate dataExclusao;
 	
-	@NotBlank(message = "O campo de descrição é obrigatório.")
+	@NotBlank(message = "O campo de Descrição é obrigatório.")
 	private String descricao;
 
 	public EquipamentoDto(Equipamento eqp) {
@@ -69,6 +70,7 @@ public class EquipamentoDto {
 			this.valor = eqp.getValor();
 			this.dataExclusao = eqp.getDataExclusao();
 			this.descricao = eqp.getDescricao();
+			this.statusEquipamento = eqp.getStatus();
 		}
 	}
 	
@@ -80,6 +82,7 @@ public class EquipamentoDto {
 					.dataAquisicao(dataAquisicao)
 					.descricao(descricao)
 					.valor(valor)
+					.status(statusEquipamento)
 					.dataExclusao(dataExclusao)
 					.build();
 	}

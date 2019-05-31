@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 /**
  *
  * @author Elvis da Guarda
@@ -22,11 +24,9 @@ public interface LaboratorioRepository extends Repository {
 	Laboratorio findByLocalizacaoContainingIgnoreCase(String localizacao);
 	Optional<Laboratorio> findById(String id);
     Page<Laboratorio> findAll(Pageable pageable);
-	List<Laboratorio> findAll();
+	List<Laboratorio> findAll(Boolean isDelete);
     boolean existsByLocalizacaoContainingIgnoreCase(String localizacao);
 	void updateLocalizacaoAndEdificioAndAndar(String id, String localizacao, String edificio, Integer andar);
-    void deleteById(String id);
-	void delete(Laboratorio lab);
 
 	default List<Laboratorio> find(String localizacao, String edificio, Integer andar, EntityManager em) {
 		final var pattern = "%";
@@ -41,15 +41,15 @@ public interface LaboratorioRepository extends Repository {
 
 		List<Predicate> predicates = new ArrayList<>();
 
-		if (!Objects.isNull(localizacao) && !localizacao.isEmpty()) {
+		if (localizacao.isBlank()) {
 			predicates.add(criteriaBuilder.like(localizacaoPath, pattern + localizacao + pattern));
 		}
 
-		if (!Objects.isNull(edificio) && !edificio.isEmpty()) {
+		if (!isNull(edificio) && !edificio.isEmpty()) {
 			predicates.add(criteriaBuilder.like(edificioPath, pattern + edificio + pattern));
 		}
 
-		if (!Objects.isNull(andar)) {
+		if (!isNull(andar)) {
 			predicates.add(criteriaBuilder.equal(andarPath, andar));
 		}
 
@@ -57,5 +57,4 @@ public interface LaboratorioRepository extends Repository {
 
 		return typedQuery.getResultList();
 	}
-
 }

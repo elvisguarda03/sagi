@@ -19,7 +19,13 @@ public enum Message {
 	MSG_11("A sua conta foi ativada.\nBem vindo ao Sagi!"),
 	MSG_12("Usuário ativado com sucesso."),
 	MSG_13("Solicitação excluída com sucesso."),
-	MSG_14("A solicitação para validação da sua conta foi enviado para o admin do sistema.");
+	MSG_14("A solicitação para validação da sua conta foi enviado para o admin do sistema."),
+	MSG_15("Laboratório deletado com sucesso!"),
+	MSG_16("Equipamento deletado com sucesso!"),
+	MSG_17("Senha Atual é inválida."),
+	MSG_18("Senha alterada com sucesso!"),
+	MSG_19("E-mail alterado com sucesso!"),
+	MSG_20("O usuário fornecido não existe.");
 	
 	private String message;
 	

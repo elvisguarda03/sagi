@@ -22,7 +22,7 @@ public class LaboratorioService {
 	private final LaboratorioRepository repository;
 		
 	public List<Laboratorio> findAll() {
-		return repository.findAll();
+		return repository.findAll(false);
 	}
 
 	public Page<Laboratorio> findAll(Pageable pageable) {
@@ -30,6 +30,15 @@ public class LaboratorioService {
 	}
 
 	public Laboratorio cadastrar(Laboratorio laboratorio) {
+		if (repository.existsByLocalizacaoContainingIgnoreCase(laboratorio.getLocalizacao())) {
+			laboratorio = repository.findByLocalizacaoContainingIgnoreCase(laboratorio.getLocalizacao());
+			laboratorio.setIsDelete(false);
+
+			update(laboratorio);
+
+			return laboratorio;
+		}
+
 		return repository.save(laboratorio);
 	}
 
@@ -49,7 +58,10 @@ public class LaboratorioService {
     	return repository.existsById(id);
 	}
 
-	public void deleteById(String id) {
-		repository.deleteById(id);
+	public void unavailable(String id) {
+		var laboratorio = repository.findById(id).get();
+		laboratorio.setIsDelete(true);
+
+		repository.save(laboratorio);
 	}
 }

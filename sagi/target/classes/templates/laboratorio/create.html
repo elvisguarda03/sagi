@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/template}">
+      layout:decorate="~{fragments/template}">
 
 <head>
     <meta charset="UTF-8">
@@ -18,40 +18,38 @@
                         <span class="alert alert-success" th:text="${msg}"></span>
                     </p>
                 </th:block>
-                <th:block th:if="${not #maps.isEmpty(errors)}">
-                    <p th:if="${#maps.containsKey(errors, 'localizacao')}">
-                        <span class="alert alert-danger" th:text="${errors.get('localizacao')}"></span>
-                    </p>
-
-                    <br/>
-
-                    <p th:if="${#maps.containsKey(errors, 'edificio')}">
-                        <span class="alert alert-danger" th:text="${errors.get('edificio')}"></span>
-                    </p>
-
-                    <br/>
-
-                    <p th:if="${#maps.containsKey(errors, 'andar')}">
-                        <span class="alert alert-danger" th:text="${errors.get('andar')}"></span>
-                    </p>
-                </th:block>
 
                 <div class="col-lg-12">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <h6>Localização</h6>
-                            <input class="form-control" type="text" th:field="*{localizacao}" th:name="@{localizacao}" required>
+                            <input class="form-control" th:classappend="${not #maps.isEmpty(errors) and #maps.containsKey(errors, 'localizacao')} ? 'panel-bordered-danger'" type="text" th:field="*{localizacao}" th:name="@{localizacao}" required>
+                            <th:block th:if="${not #maps.isEmpty(errors)}">
+                                <p th:if="${#maps.containsKey(errors, 'localizacao')}">
+                                    <span class="text-left text-danger" th:text="${errors.get('localizacao')}"></span>
+                                </p>
+                            </th:block>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <h6>Edifício</h6>
-                            <select name="edificio" id="dropEdificio" class="form-control" required>
+                            <select name="edificio" class="form-control" th:classappend="${not #maps.isEmpty(errors) and #maps.containsKey(errors, 'edificio')} ? 'panel-bordered-danger'" id="dropEdificio" required>
                                 <option th:value="${null}">Selecione um Edifício</option>
                                 <option th:each="e : ${edificios}" th:text="${e.getEdificio()}" th:value="${e}"></option>
                             </select>
+                            <th:block th:if="${not #maps.isEmpty(errors)}">
+                                <p th:if="${#maps.containsKey(errors, 'edificio')}">
+                                    <span class="text-left text-danger" th:text="${errors.get('edificio')}"></span>
+                                </p>
+                            </th:block>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <h6>Andar</h6>
-                            <input class="form-control" type="number" th:field="*{andar}" th:name="@{andar}" required>
+                            <input class="form-control" th:classappend="${not #maps.isEmpty(errors) and #maps.containsKey(errors, 'andar')} ? 'panel-bordered-danger'" type="number" th:field="*{andar}" name="andar" required>
+                            <th:block th:if="${not #maps.isEmpty(errors)}">
+                                <p th:if="${#maps.containsKey(errors, 'andar')}">
+                                    <span class="text-left text-danger" th:text="${errors.get('andar')}"></span>
+                                </p>
+                            </th:block>
                         </div>
                     </div>
                 </div>

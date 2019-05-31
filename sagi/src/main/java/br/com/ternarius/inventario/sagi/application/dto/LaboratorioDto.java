@@ -29,7 +29,7 @@ public class LaboratorioDto {
 	@Nullable
 	private String id;
 	
-	@NotBlank(message = "A localização é obrigatória.")
+	@NotBlank(message = "O campo localização é obrigatório.")
 	@Pattern(regexp = "[^0-9]*", message = "Não é possível inserir números no campo Localização.")
 	private String localizacao;
 	

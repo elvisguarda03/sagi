@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import br.com.ternarius.inventario.sagi.domain.entity.Laboratorio;
 import br.com.ternarius.inventario.sagi.domain.repository.LaboratorioRepository;
 
+import java.util.List;
+
 /**
  * 
  * @author Elvis da Guarda
@@ -22,4 +24,8 @@ public interface LaboratorioJpaRepository
 	@Modifying
 	@Query("UPDATE Laboratorio l SET l.localizacao = :localizacao, l.edificio = :edificio, l.andar = :andar WHERE l.id = :id")
 	void updateLocalizacaoAndEdificioAndAndar(@Param("id") String id, @Param("localizacao") String localizacao, @Param("edificio") String edificio, @Param("andar") Integer andar);
+
+	@Modifying
+	@Query("FROM Laboratorio l WHERE l.isDelete = :pIsDelete")
+	List<Laboratorio> findAll(@Param("pIsDelete") Boolean isDelete);
 }

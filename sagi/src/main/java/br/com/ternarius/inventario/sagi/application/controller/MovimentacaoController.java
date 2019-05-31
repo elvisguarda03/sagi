@@ -5,8 +5,6 @@ import br.com.ternarius.inventario.sagi.domain.repository.UsuarioRepository;
 import br.com.ternarius.inventario.sagi.domain.service.MovimentacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,19 +25,16 @@ import java.util.Optional;
 @Controller
 public class MovimentacaoController extends BaseController {
 
-    private final UsuarioRepository usuarioRepository;
     private final MovimentacaoService movimentacaoService;
     private final MovimentacaoRepository movimentacaoRepository;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView index(ModelAndView modelAndView, @AuthenticationPrincipal UserDetails userDetails) {
+    public ModelAndView index(ModelAndView modelAndView) {
         if (!IsLogged()) {
-            modelAndView.setViewName("redirect:/login");
+            redirectToLogin(modelAndView);
             return modelAndView;
         }
-
-        userLogged(modelAndView, userDetails, usuarioRepository);
 
         return modelAndView;
     }
@@ -49,7 +44,7 @@ public class MovimentacaoController extends BaseController {
     public ModelAndView giveBack(@PathVariable("idMovimentacao") Optional<String> record,
                              ModelAndView modelAndView, RedirectAttributes attributes) {
         if (!IsLogged()) {
-            modelAndView.setViewName("redirect:/login");
+            redirectToLogin(modelAndView);
             return modelAndView;
         }
 

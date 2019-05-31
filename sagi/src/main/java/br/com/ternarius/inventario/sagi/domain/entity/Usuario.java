@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -46,26 +47,27 @@ public class Usuario {
 			strategy = "org.hibernate.id.UUIDGenerator")
 	private String id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "tipo_usuario")
 	@Enumerated(EnumType.ORDINAL)
-	private TipoUsuario tipo;
+	private TipoUsuario tipoUsuario;
 	
 	@Column(nullable = false)
 	
 	@Enumerated(EnumType.ORDINAL)
 	private StatusUsuario status;
 
-	@NotBlank(message = "Digite o email")
 	@Column(nullable = false, unique = true, length = 100)
-	@Email(message = "E-mail inválido")
+	@NotBlank(message = "Digite o E-mail.")
+	@Email(message = "E-mail inválido.")
 	private String email;
 	
 	@Column(nullable = false, length = 100)
-    @NotBlank(message = "O campo nome é obrigatório")
+    @NotBlank(message = "O campo Nome é obrigatório.")
+	@Pattern(regexp = "[^0-9]*", message = "Não é possível inserir números no campo Nome.")
 	private String nome;
 	
 	@Column(nullable = false, length = 100)
-	@NotBlank(message = "O campo senha é obrigatório")
+	@NotBlank(message = "O campo Senha é obrigatório.")
 	@JsonIgnore
 	private String senha;
 
@@ -76,7 +78,11 @@ public class Usuario {
 	@Builder.Default
 	@Column(name = "already_logged_in", nullable = false)
 	private Boolean alreadyLoggedIn = false;
-	
+
+	@Column(name = "is_delete", nullable = false)
+	@Builder.Default
+	private Boolean isDelete = false;
+
 	@LastModifiedDate
 	@Column(name = "data_atualizacao")
 	private LocalDateTime dataAtualizacao;

@@ -1,9 +1,6 @@
 package br.com.ternarius.inventario.sagi.infrastructure.config;
 
 
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +16,10 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.sql.DataSource;
+
 /**
- * 
+ *
  * @author Elvis da Guarda
  *
  */
@@ -28,10 +27,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private DataSource dataSource;
 
@@ -40,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService)
 				.passwordEncoder(new BCryptPasswordEncoder());
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.
@@ -55,26 +54,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().formLogin()
 						.loginPage("/login")
 							.permitAll()
-								.failureUrl("/login/erro")
+								.failureUrl("/login?error=true")
 									.defaultSuccessUrl("/dashboard", true)
 				.and()
 					.logout()
                     	.invalidateHttpSession(true)
                     	.clearAuthentication(true)
                     	.deleteCookies("JSESSIONID")
+						.clearAuthentication(true)
                     	.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     	.logoutSuccessUrl("/login?logout")
                     .permitAll()
                     .and()
                     .rememberMe()
-                    .rememberMeParameter("remember-me")
-                    .key("remember-me")
-                    .tokenRepository(persistentTokenRepository())
-                    .userDetailsService(userDetailsService);
+						.rememberMeParameter("remember-me")
+						.key("remember-me")
+						.tokenRepository(persistentTokenRepository())
+						.userDetailsService(userDetailsService);
 
 		http.csrf().disable();
 	}
-	
+
 	@Override
 	public void configure(WebSecurity webSecurity) throws Exception {
 		webSecurity.ignoring()
@@ -82,18 +82,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            "/static/**",
 	            "/bootstrap/**",
 	            "/js/**",
+	            "/plugins/**",
+	            "/demo/**",
 	            "/css/**",
+	            "/premium/**",
 	            "/videos/**",
 	            "/images/**",
 	            "/resources/**"
         	 );
 	}
-	
+
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {
 		JdbcTokenRepositoryImpl tokenRepositoryImpl = new JdbcTokenRepositoryImpl();
 		tokenRepositoryImpl.setDataSource(dataSource);
-		
+
 		return tokenRepositoryImpl;
 	}
 }

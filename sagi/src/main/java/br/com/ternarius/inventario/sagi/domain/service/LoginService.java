@@ -3,6 +3,8 @@ package br.com.ternarius.inventario.sagi.domain.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import br.com.ternarius.inventario.sagi.infrastructure.config.SendGridConfig;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,15 +33,16 @@ public class LoginService {
 	private final UsuarioRepository usuarioRepository;
 	private final UsuarioTokenRepository usuarioTokenRepository;
 	private final EmailNotificationService notificationService;
+	private final SendGridConfig sendGridConfig;
 	private final AppConfig config;
 	
 	public Notification recuperarSenha(String email) {
 		Notification notification = new Notification();
-		Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
+		Optional<Usuario> record = usuarioRepository.findByEmail(email);
 		
-		if (usuario.isPresent()) {
+		if (record.isPresent()) {
 			UsuarioToken usuarioToken = UsuarioToken.builder()
-					.usuario(usuario.get())
+					.usuario(record.get())
 					.token(SecureRandom.hex())
 					.dataExpiracao(LocalDateTime.now().plusHours(24))
 					.build();
@@ -52,12 +55,14 @@ public class LoginService {
 					.to(email)
 					.from("nao-responder@capivaras.com.br")
 					.title("Recuperação de Senha")
-					.template("recupera-senha")
+					.message("E-mail para recuperação de senha.\n")
+					.template(sendGridConfig.getSendGridTemplateRecuperaSenha())
+					.nome(record.get().getNome())
 					.url(link)
 					.build();
 			
 			notificationService.send(pushNotification);
-			log.info("Email para redefinição de senha para o usuário " + usuario.get().getNome() + " enviado");
+			log.info("Email para redefinição de senha para o usuário " + record.get().getNome() + " enviado");
 			
 			return notification;
 		}
@@ -118,8 +123,54 @@ public class LoginService {
 		
 		return notification;
 	}
+
+	public Notification validarSenhaAtual(String id, String senhaAtual) {
+		final var notification = new Notification();
+
+		var user = usuarioRepository.findById(id).get();
+
+		if (!BCrypt.checkpw(senhaAtual, user.getSenha())) {
+			notification.addError(Message.MSG_17.getMessage());
+		}
+
+		return notification;
+	}
 	
 	private boolean validarTokenAtivo(Optional<UsuarioToken> registro) {
 		return registro.isPresent() && registro.get().ativo();
+	}
+
+	public Notification changePassword(String id, String senhaAtual, String newPassword) {
+		var notification = validarSenhaAtual(id, senhaAtual);
+
+		if (notification.fail()) {
+			return notification;
+		}
+
+		var record = usuarioRepository.findById(id);
+
+		if (record.isPresent()) {
+			usuarioRepository.updatePassword(record.get().getId(), newPassword);
+		}
+
+		return notification;
+	}
+
+	public Notification changeEmail(String id, String email) {
+		final var notification = new Notification();
+
+		final var record = usuarioRepository.findById(id);
+
+		if (!record.isPresent()) {
+			notification.addError(Message.MSG_20.getMessage());
+			return notification;
+		}
+
+		var user = record.get();
+		user.setEmail(email);
+
+		usuarioRepository.save(user);
+
+		return notification;
 	}
 }

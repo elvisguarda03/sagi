@@ -2,6 +2,7 @@ package br.com.ternarius.inventario.sagi.application.dto;
 
 import java.time.LocalDateTime;
 
+import br.com.ternarius.inventario.sagi.domain.enums.TipoUsuario;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import br.com.ternarius.inventario.sagi.domain.entity.Usuario;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class UsuarioDto {
 	private String id;
 	private StatusUsuario status;
+	private TipoUsuario tipoUsuario;
 	private String email;
 	private String nome;
 	
@@ -30,6 +32,7 @@ public class UsuarioDto {
 			this.status = usuario.getStatus();
 			this.email = usuario.getEmail();
 			this.nome = usuario.getNome();
+			this.tipoUsuario = usuario.getTipoUsuario();
 			this.dataCriacao = usuario.getDataCriacao();
 		}
 	}
@@ -40,6 +43,7 @@ public class UsuarioDto {
 				.status(status)
 				.email(email)
 				.nome(nome)
+				.tipoUsuario(tipoUsuario)
 				.build();
 	}
 }

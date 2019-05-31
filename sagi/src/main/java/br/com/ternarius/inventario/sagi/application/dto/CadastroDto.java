@@ -3,7 +3,7 @@ package br.com.ternarius.inventario.sagi.application.dto;
 import br.com.ternarius.inventario.sagi.domain.entity.Usuario;
 import br.com.ternarius.inventario.sagi.domain.enums.StatusUsuario;
 import br.com.ternarius.inventario.sagi.domain.enums.TipoUsuario;
-import br.com.ternarius.inventario.sagi.infrastructure.security.PasswordsEqual;
+import br.com.ternarius.inventario.sagi.infrastructure.security.PasswordEqual;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@PasswordsEqual
+@PasswordEqual
 public class CadastroDto {
 
     @Size(min = 5, max = 50, message = "Digite o Nome e o Sobrenome.")
@@ -51,7 +51,7 @@ public class CadastroDto {
                 .email(email)
                 .senha(senha)
                 .status(StatusUsuario.CADASTRO_EM_ABERTO)
-                .tipo(TipoUsuario.USER)
+                .tipoUsuario(TipoUsuario.USER)
                 .build();
     }
 }

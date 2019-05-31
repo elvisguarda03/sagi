@@ -34,7 +34,7 @@ public class AppUserDetailsService implements UserDetailsService {
 		final Optional<Usuario> record = this.repositorio.findByEmail(username);
 
 		if (!record.isPresent() || 
-				record.get().getStatus().equals(StatusUsuario.CONFIRMACAO_EMAIL_PENDENTE)) {
+				!record.get().getStatus().equals(StatusUsuario.EMAIL_VALIDADO)) {
 			return null;
 		}
 		
@@ -42,7 +42,7 @@ public class AppUserDetailsService implements UserDetailsService {
 		
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		
-		AuthorityUtils.createAuthorityList(PREFIX_AUTHORITY + usuario.getTipo().toString())
+		AuthorityUtils.createAuthorityList(PREFIX_AUTHORITY + usuario.getTipoUsuario().toString())
 				.forEach(a -> grantedAuthorities.add(a));
 		
 		return new User(usuario.getEmail(), usuario.getSenha(), grantedAuthorities);

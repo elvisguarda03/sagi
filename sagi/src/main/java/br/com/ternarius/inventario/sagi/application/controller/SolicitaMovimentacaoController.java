@@ -3,13 +3,11 @@ package br.com.ternarius.inventario.sagi.application.controller;
 import br.com.ternarius.inventario.sagi.domain.entity.Movimentacao;
 import br.com.ternarius.inventario.sagi.domain.entity.SolicitacaoEquipamento;
 import br.com.ternarius.inventario.sagi.domain.repository.SolicitacaoEquipamentoRepository;
-import br.com.ternarius.inventario.sagi.domain.repository.UsuarioRepository;
 import br.com.ternarius.inventario.sagi.domain.service.MovimentacaoService;
+import br.com.ternarius.inventario.sagi.domain.service.PushNotificationService;
 import br.com.ternarius.inventario.sagi.domain.service.SolicitacaoEquipamentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -23,6 +21,7 @@ import java.util.Optional;
 /**
  *
  * @author Elvis de Sousa
+ *
  */
 
 @RequiredArgsConstructor
@@ -31,18 +30,15 @@ import java.util.Optional;
 public class SolicitaMovimentacaoController extends BaseController {
 
     private final MovimentacaoService movimentacaoService;
-    private final UsuarioRepository repository;
     private final SolicitacaoEquipamentoService solicitacaoEquipamentoService;
     private final SolicitacaoEquipamentoRepository solicitacaoEquipamentoRepository;
 
     @GetMapping
-    public ModelAndView index(ModelAndView modelAndView, @AuthenticationPrincipal UserDetails userDetails) {
+    public ModelAndView index(ModelAndView modelAndView) {
         if (!IsLogged()) {
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }
-
-        userLogged(modelAndView, userDetails, repository);
 
         modelAndView.setViewName("movimentacao/index");
         modelAndView.addObject("movimentacaoDtos", solicitacaoEquipamentoService.fimdAll());
@@ -51,12 +47,12 @@ public class SolicitaMovimentacaoController extends BaseController {
     }
 
     @GetMapping("/cadastra-solicitacao/{idEquipamento}")
-    public ModelAndView create(@PathVariable("idEquipamento") Optional<String> record, ModelAndView modelAndView, @AuthenticationPrincipal UserDetails userDetails) {
+    public ModelAndView create(@PathVariable("idEquipamento") Optional<String> record, ModelAndView modelAndView) {
         return modelAndView;
     }
 
-    @Transactional(rollbackFor = Throwable.class)
-    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional(rollbackFor = Exception.class)
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('MOD')")
     @PostMapping
     public ModelAndView create(@Valid @ModelAttribute("movimentacao") SolicitacaoEquipamento solicitacaoEquipamento,
                                BindingResult result, ModelAndView modelAndView, RedirectAttributes attributes) {
@@ -80,7 +76,7 @@ public class SolicitaMovimentacaoController extends BaseController {
 
     @Transactional(rollbackFor = Throwable.class)
     @GetMapping("/permite/{idSolicitacao}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MOD')")
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('MOD')")
     public ModelAndView accept(@PathVariable Optional<String> record, ModelAndView modelAndView, RedirectAttributes attributes) {
         if (!IsLogged()) {
             modelAndView.setViewName("redirect:/login");
@@ -110,7 +106,7 @@ public class SolicitaMovimentacaoController extends BaseController {
     }
 
     @GetMapping("/negado/{idSolicitacao}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') OR hasRole('MOD')")
     public ModelAndView reject(@PathVariable Optional<String> record, ModelAndView modelAndView, RedirectAttributes attributes) {
         if (!IsLogged()) {
             modelAndView.setViewName("redirect:/login");

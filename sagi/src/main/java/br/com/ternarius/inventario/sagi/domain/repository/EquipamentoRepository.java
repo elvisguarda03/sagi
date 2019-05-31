@@ -11,8 +11,10 @@ import javax.persistence.criteria.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.Objects.isNull;
+import static org.apache.logging.log4j.util.Strings.isBlank;
 
 /**
  * 
@@ -25,11 +27,12 @@ public interface EquipamentoRepository extends Repository {
 	Page<Equipamento> findByLaboratorio(Laboratorio laboratorio, Pageable pageable);
 	Optional<Equipamento> findByNomeEquipamento(String nomeEquipamento);
 	List<Equipamento> findByStatus(Boolean status);
-	List<Equipamento> findAll();
+	List<Equipamento> findAll(Boolean isDelete);
 	Page<Equipamento> findAll(Pageable pageable);
 	Long countByNomeEquipamento(String nomeEquipamento);
+	Equipamento findByCodigoPatrimonio(Long codigoPatrimonio);
 	Optional<Equipamento> findById(String id);
-	void deleteById(String id);
+    boolean existsByCodigoPatrimonio(Long codigoPatrimonio);
 	boolean existsByNomeEquipamentoContainingIgnoreCase(String nomeEquipamento);
 
 	default List<Equipamento> find(String nome, String localizacao, Long codigoPatrimonio, BigDecimal valor, EntityManager em) {
@@ -46,19 +49,19 @@ public interface EquipamentoRepository extends Repository {
 
 		List<Predicate> predicates = new ArrayList<>();
 
-		if (!Objects.isNull(nome) && !nome.isEmpty()) {
+		if (!isBlank(nome)) {
 			predicates.add(criteriaBuilder.like(nomePath, pattern + nome + pattern));
 		}
 
-		if (!Objects.isNull(localizacao) && !localizacao.isEmpty()) {
+		if (!isBlank(localizacao)) {
 			predicates.add(criteriaBuilder.like(localizacaoPath, pattern + localizacao + pattern));
 		}
 
-		if (!Objects.isNull(codigoPatrimonio)) {
+		if (!isNull(codigoPatrimonio)) {
 			predicates.add(criteriaBuilder.equal(codigoPatrimonioPath, codigoPatrimonio));
 		}
 
-		if (!Objects.isNull(valor)) {
+		if (!isNull(valor)) {
 			predicates.add(criteriaBuilder.equal(valorPath, valor));
 		}
 
@@ -67,4 +70,5 @@ public interface EquipamentoRepository extends Repository {
 
 		return typedQuery.getResultList();
 	}
+
 }

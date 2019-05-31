@@ -25,7 +25,7 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException manvException) {
-        var errors = new HashMap<>();
+        var errors = new HashMap<String, String>();
         var fieldErrors = manvException.getBindingResult().getFieldErrors();
 
         fieldErrors.forEach(f -> {
@@ -33,7 +33,7 @@ public class RestExceptionHandler {
             var fieldMessage = f.getDefaultMessage();
             errors.put(field, fieldMessage);
         });
-        errors.put("status", "" + HttpStatus.BAD_REQUEST.value());
+        errors.put("statusEquipamento", String.valueOf(HttpStatus.BAD_REQUEST.value()));
 
         return ResponseEntity.badRequest().body(errors);
     }
@@ -43,11 +43,10 @@ public class RestExceptionHandler {
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException hmnre) {
         var errors = new HashMap<String, String>();
         errors.put("error", hmnre.getLocalizedMessage());
-        errors.put("status", "" + HttpStatus.BAD_REQUEST.value());
+        errors.put("statusEquipamento", "" + HttpStatus.BAD_REQUEST.value());
 
         return ResponseEntity.badRequest().body(errors);
     }
-
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AccessDeniedException.class)

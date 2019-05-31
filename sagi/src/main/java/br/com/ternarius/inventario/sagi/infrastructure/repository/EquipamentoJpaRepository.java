@@ -34,4 +34,8 @@ public interface EquipamentoJpaRepository
 	@Modifying
 	@Query("FROM Equipamento e INNER JOIN FETCH e.laboratorio l WHERE l = :lab GROUP BY l.localizacao")
 	List<Equipamento> findAll(@Param("lab") Laboratorio laboratorio);
+
+	@Modifying
+	@Query("FROM Equipamento e WHERE e.isDelete = :pIsDelete")
+	List<Equipamento> findAll(@Param("pIsDelete") Boolean isDelete);
 }

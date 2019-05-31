@@ -1,19 +1,23 @@
 package br.com.ternarius.inventario.sagi.infrastructure.config;
 
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import lombok.Data;
 
 /**
  * 
  * @author Elvis da Guarda
  *
  */
+
 @Data
 @Component
 public class SendGridConfig {
-	
-	@Value("${app.SENDGRID_API_KEY}")
-	private String sendGridAPIKey;
+	private final String sendGridAPIKey = System.getenv("SENDGRID_API_KEY");
+
+	@Value("${sendgrid.template-cadastro-id}")
+	private String sendGridTemplateCadastro;
+
+	@Value("${sendgrid.template-recupera-senha-id}")
+	private String sendGridTemplateRecuperaSenha;
 }
