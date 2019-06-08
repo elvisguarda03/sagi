@@ -24,16 +24,12 @@ public interface EquipamentoJpaRepository
 		extends EquipamentoRepository, PagingAndSortingRepository<Equipamento, String> {
 	
 	@Modifying
-	@Query("FROM Equipamento e WHERE e.nomeEquipamento = :nome")
-	Optional<Equipamento> findByNomeEquipamento(@Param("nome") String nomeEquipamento);
-
-	@Modifying
 	@Query("UPDATE Equipamento e SET e.isMaintenance = :pIsMaintenance WHERE e.id = :pId")
 	Equipamento updateIsMaintenance(@Param("pId") String id, @Param("pIsMaintenance") Boolean isMaintenance);
 
 	@Modifying
-	@Query("FROM Equipamento e INNER JOIN FETCH e.laboratorio l WHERE l = :lab GROUP BY l.localizacao")
-	List<Equipamento> findAll(@Param("lab") Laboratorio laboratorio);
+	@Query("FROM Equipamento e INNER JOIN FETCH e.laboratorio l WHERE l = :pLab GROUP BY l.localizacao")
+	List<Equipamento> findAll(@Param("pLab") Laboratorio laboratorio);
 
 	@Modifying
 	@Query("FROM Equipamento e WHERE e.isDelete = :pIsDelete")

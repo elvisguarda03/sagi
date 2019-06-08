@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("cadastro/validar")
+@RequestMapping("/cadastro/validar")
 public class ValidaCadastroController extends BaseController {
 
 	private final CadastroService service;

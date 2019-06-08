@@ -49,6 +49,10 @@ public class Movimentacao {
     @NotNull
     private Usuario solicitante;
 
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean status = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "localizacao_atual_id", nullable = false)
     @NotNull

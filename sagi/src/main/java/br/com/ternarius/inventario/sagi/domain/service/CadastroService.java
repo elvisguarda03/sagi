@@ -9,6 +9,7 @@ import br.com.ternarius.inventario.sagi.domain.repository.UsuarioRepository;
 import br.com.ternarius.inventario.sagi.domain.repository.UsuarioTokenRepository;
 import br.com.ternarius.inventario.sagi.domain.valueobject.EmailNotification;
 import br.com.ternarius.inventario.sagi.domain.valueobject.Notification;
+import br.com.ternarius.inventario.sagi.domain.valueobject.SolicitacaoNotification;
 import br.com.ternarius.inventario.sagi.infrastructure.config.AppConfig;
 import br.com.ternarius.inventario.sagi.infrastructure.config.SendGridConfig;
 import br.com.ternarius.inventario.sagi.infrastructure.security.SecureRandom;
@@ -22,13 +23,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static br.com.ternarius.inventario.sagi.domain.enums.TipoUsuario.USER;
+
 /**
  * @author Elvis da Guarda
  */
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CadastroService {
+public class CadastroService extends BaseService {
 
     private final UsuarioTokenRepository usuarioTokenRepository;
     private final UsuarioRepository usuarioRepository;
@@ -41,10 +44,19 @@ public class CadastroService {
 
         if (notification.success()) {
             usuario.criptografarSenha();
-
             usuarioRepository.save(usuario);
 
-            sendAllNotificationForEmail(usuario.getNome());
+            var message = "O usuário " + usuario.getNome() + " acaba de se cadastrar no sistema e aguarda pela sua definição. Efetue login  para validar!!\n";
+            var solicitacao = SolicitacaoNotification.builder()
+                    .message(message)
+                    .nome(usuario.getNome())
+                    .templateId(sendGridConfig.getSendGridTemplateCadastro())
+                    .title("Solicitação Cadastro")
+                    .url(config.getUrl())
+                    .build();
+
+            sendAllNotificationForEmail(solicitacao, notificationService, usuarioRepository.
+                    findByTipoUsuario(USER));
 
             log.info("Usuário cadastrado!");
         }
@@ -52,34 +64,15 @@ public class CadastroService {
         return notification;
     }
 
-    private void sendAllNotificationForEmail(String nome) {
-        var url = config.getUrl() + "admin/solicita-cadastro";
-
-        var admins = usuarioRepository.findByTipoUsuarioOrTipoUsuario(TipoUsuario.ADMIN, TipoUsuario.MOD);
-
-        admins.forEach(a -> {
-            EmailNotification pushNotification = EmailNotification.builder()
-                    .from("sagi@gmail.com")
-                    .to(a.getEmail())
-                    .template(sendGridConfig.getSendGridTemplateCadastro())
-                    .nome(nome)
-                    .title("Solicitação de Cadastro")
-                    .message("O usuário " + nome + " acaba de se cadastrar no sistema e aguarda pela sua definição. Efetue login  para validar!!")
-                    .url(url)
-                    .build();
-            notificationService.send(pushNotification);
-        });
-    }
-
     public void ativar(String id) {
-        Usuario usuario = usuarioRepository.findById(id).get();
+        var usuario = usuarioRepository.findById(id).get();
         usuario.setStatus(StatusUsuario.CONFIRMACAO_EMAIL_PENDENTE);
 
-        UsuarioToken usuarioToken = buildToken(usuario);
+        var usuarioToken = buildToken(usuario);
         usuarioToken.criptografarToken();
         usuarioTokenRepository.save(usuarioToken);
 
-        sendConfirmationEmail(usuario.getEmail(), usuarioToken.getToken());
+        sendConfirmationEmail(usuario, usuarioToken.getToken());
         log.info("Email enviado!");
     }
 
@@ -109,16 +102,14 @@ public class CadastroService {
         return notification;
     }
 
-    public void sendConfirmationEmail(final String email, final String token) {
-        Usuario u = usuarioRepository.findByEmail(email).get();
-
-        String url = config.getUrl() + "/validar?email=" + email + "&token=" + token;
+    public void sendConfirmationEmail(final Usuario user, final String token) {
+        String url = config.getUrl() + "/cadastro/validar?email=" + user.getEmail() + "&token=" + token;
 
         EmailNotification pushNotification = EmailNotification.builder()
                 .from("sagi@gmail.com")
-                .to(u.getEmail())
+                .to(user.getEmail())
                 .template(sendGridConfig.getSendGridTemplateCadastro())
-                .nome(u.getNome())
+                .nome(user.getNome())
                 .title("Conta foi validada pelo Admin do sistema")
                 .message("A sua conta já está efetivada, para efetuar o primeiro login no sistema clique no botão abaixo.")
                 .url(url)

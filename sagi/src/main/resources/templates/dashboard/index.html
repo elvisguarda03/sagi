@@ -48,39 +48,26 @@
                             <table class="table table-striped" data-page-size="3">
                                 <thead>
                                 <tr>
-                                    <th><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">ID</font></font></th>
-                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Solicitante</font></font>
-                                    </th>
-                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Data
-                                        do Pedido</font></font></th>
-                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Equipamento</font></font>
-                                    </th>
-                                    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Para
-                                        Data</font></font></th>
-                                    <th class="text-center"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">Status</font></font></th>
-                                    <th class="text-center"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">Ação</font></font></th>
+                                    <th>ID</th>
+                                    <th>Solicitante</th>
+                                    <th>Data do Pedido</th>
+                                    <th>Equipamento</th>
+                                    <th>Para Data</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Ação</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><a href="#" class="btn-link"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">53434</font></font></a></td>
-                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Teresa
-                                        L. Doe</font></font></td>
-                                    <td><span class="text-muted"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">15 de outubro de 2016</font></font></span>
+                                    <td><a href="#" class="btn-link">53434</a></td>
+                                    <td>Teresa L. Doe</td>
+                                    <td><span class="text-muted">15 de outubro de 2016</span>
                                     </td>
-                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Camera</font></font>
+                                    <td>Camera
                                     </td>
-                                    <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">15
-                                        de outubro de 2015</font></font></td>
+                                    <td>15 de outubro de 2015</td>
                                     <td class="text-center">
-                                        <div class="label label-table label-info"><font
-                                                style="vertical-align: inherit;"><font style="vertical-align: inherit;">Permitido</font></font>
-                                        </div>
+                                        <div class="label label-table label-info">Permitido </div>
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group dropdown">
@@ -91,12 +78,9 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
                                                 <li>
-                                                    <a th:href="@{/link/{idSolicitacao}(idSolicitacao=${idDaTabela})}"><font
-                                                            style="vertical-align: inherit;"><font
-                                                            style="vertical-align: inherit;">Permitir</font></font></a>
+                                                    <a th:href="@{/link/{idSolicitacao}(idSolicitacao=${idDaTabela})}">Permitir</a>
                                                 </li>
-                                                <li><a href="#"><font style="vertical-align: inherit;"><font
-                                                        style="vertical-align: inherit;">Recusar</font></font></a></li>
+                                                <li><a href="#">Recusar</a></li>
                                                 <li><a href="solicitacao/index">
                                                     <button class="btn btn-success" id="btnInfo">Info</button>
                                                 </a></li>
@@ -137,7 +121,7 @@
                                                 <li><a href="#"><font style="vertical-align: inherit;"><font
                                                         style="vertical-align: inherit;">Recusar</font></font></a></li>
                                                 <li><a href="solicitacao/index">
-                                                    <button class="btn btn-success" id="btnInfo">Info</button>
+                                                    <button class="btn btn-success">Info</button>
                                                 </a></li>
                                             </ul>
                                         </div>
@@ -176,7 +160,7 @@
                                                 <li><a href="#"><font style="vertical-align: inherit;"><font
                                                         style="vertical-align: inherit;">Recusar</font></font></a></li>
                                                 <li><a href="solicitacao/index">
-                                                    <button class="btn btn-success" id="btnInfo">Info</button>
+                                                    <button class="btn btn-success">Info</button>
                                                 </a></li>
                                             </ul>
                                         </div>
@@ -215,7 +199,7 @@
                                                 <li><a href="#"><font style="vertical-align: inherit;"><font
                                                         style="vertical-align: inherit;">Recusar</font></font></a></li>
                                                 <li><a href="solicitacao/index">
-                                                    <button class="btn btn-success" id="btnInfo">Info</button>
+                                                    <button class="btn btn-success">Info</button>
                                                 </a></li>
                                             </ul>
                                         </div>
@@ -254,7 +238,7 @@
                                                 <li><a href="#"><font style="vertical-align: inherit;"><font
                                                         style="vertical-align: inherit;">Recusar</font></font></a></li>
                                                 <li><a href="solicitacao/index">
-                                                    <button class="btn btn-success" id="btnInfo">Info</button>
+                                                    <button class="btn btn-success">Info</button>
                                                 </a></li>
                                             </ul>
                                         </div>
@@ -267,30 +251,25 @@
                         <div class="pull-right">
                             <ul class="pagination text-nowrap mar-no">
                                 <li class="page-pre disabled">
-                                    <a href="#"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">&lt;</font></font></a>
+                                    <a href="#"><</a>
                                 </li>
                                 <li class="page-number active">
-                                    <span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></span>
+                                    <span>1</span>
                                 </li>
                                 <li class="page-number">
-                                    <a href="#"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">2</font></font></a>
+                                    <a href="#">2</a>
                                 </li>
                                 <li class="page-number">
-                                    <a href="#"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">3</font></font></a>
+                                    <a href="#">3</a>
                                 </li>
                                 <li>
-                                    <span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">...</font></font></span>
+                                    <span>...</span>
                                 </li>
                                 <li class="page-number">
-                                    <a href="#"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">9</font></font></a>
+                                    <a href="#">9</a>
                                 </li>
                                 <li class="page-next">
-                                    <a href="#"><font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">&gt;</font></font></a>
+                                    <a href="#">&gt;</a>
                                 </li>
                             </ul>
                         </div>
@@ -301,30 +280,6 @@
             </div>
         </div>
     </div>
-    <th:block th:replace="dashboard/modal_solicitacoes_info.html :: modal">
-    </th:block>
-
 </th:block>
 </body>
 </html>
-<script>
-    Notification.requestPermission().then(function (result) {
-        if (result === 'denied') {
-            console.log('Permission wasn\'t granted. Allow a retry.');
-            return;
-        }
-
-        if (result === 'granted') {
-            console.log('The permission request was granted.');
-            return;
-        }
-        // Do something with the granted permission.
-    });
-</script>
-<script type="text/javascript">
-
-    $('#btnInfo').click(function () {
-        $('#modal-body').html();
-        $('#modal_info').modal("show");
-    });
-</script>

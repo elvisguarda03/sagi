@@ -1,18 +1,17 @@
 package br.com.ternarius.inventario.sagi.application.controller;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,6 +36,9 @@ public class EquipamentoController extends BaseController {
 
     private final EquipamentoService equipamentoService;
     private final EquipamentoRepository equipamentoRepository;
+
+    @PersistenceContext
+    private EntityManager em;
     private final LaboratorioService laboratorioService;
 
     @GetMapping
@@ -136,6 +138,7 @@ public class EquipamentoController extends BaseController {
     @Transactional
     @GetMapping("/deletar-equipamento/{idEquipamento}")
     @PreAuthorize("hasRole('ADMIN')")
+    @ResponseBody
     public ModelAndView delete(@PathVariable("idEquipamento") Optional<String> record, ModelAndView modelAndView,
                                RedirectAttributes attributes) {
         if (!IsLogged()) {
@@ -177,7 +180,25 @@ public class EquipamentoController extends BaseController {
         equipamentoService.updateStatusMaitenance(equipamento.getId(), equipamento.getIsMaintenance());
 
         modelAndView.setViewName("redirect:/equipamento");
-        attributes.addFlashAttribute("", null);
+        attributes.addFlashAttribute("msg", null);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/filtros")
+    public ModelAndView findBy(@RequestParam(value = "nomeEquipamento", required = false) String nomeEquipamento,
+                                @RequestParam(value = "localizacao", required = false) String localizacao,
+                                @RequestParam(value = "codigoPatrimonio", required = false) Long codigoPatrimonio,
+                                @RequestParam(value = "valor", required = false) BigDecimal valor, ModelAndView modelAndView) {
+        if (!IsLogged()) {
+            redirectToLogin(modelAndView);
+            return modelAndView;
+        }
+
+        var equipamentos = equipamentoRepository.find(nomeEquipamento, localizacao, codigoPatrimonio, valor, em);
+
+        modelAndView.addObject("equipamentosDto", new ConverterEntitiesToDtos()
+                .fromEquipamentos(equipamentos));
 
         return modelAndView;
     }

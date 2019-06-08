@@ -13,7 +13,7 @@
 
                 <div class="modal-body">
                     <h4 class="text-danger">
-                        <strong>Confirma exclusão desse laboratório?</strong>
+                        <strong>Confirma exclusão desse Laboratório?</strong>
                     </h4>
                 </div>
 
@@ -29,32 +29,37 @@
     </div>
     <script>
         function constructUrl(url, id) {
-            if (url.endsWith("/")) {
-                url += "deletar-laboratorio/" + id;
-            } else {
-                url += "/deletar-laboratorio/" + id;
-            }
-
-            return url;
+            value = url.split('/')[2];
+            return value + '/api/laboratorios/' + id;
         }
 
-        $(document.this).ready(function () {
-            $('#apagarLaboratorio').click(function (e) {
-                e.preventDefault();
+        $('#apagarLaboratorio').click(function (e) {
+            e.preventDefault();
 
-                var id = $('#modal-deletar-laboratorio-id').val().toString();
-                var url = window.location.toString();
+            var id = $('#modal-deletar-laboratorio-id').val().toString();
 
-                url = constructUrl(url, id);
+            var url = constructUrl(window.location.toString(), id);
 
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    data: {idLaboratorio: id},
-                    success: function () {
-                        window.location.reload();
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                dataType: 'json',
+                contentType: "application/json",
+                success: function (json) {
+                    window.location.reload();
+                    console.log(json.successDelete);
+
+                    if (json.successDelete == 'true') {
+                        $(document).ready(function () {
+                            $('.new-section-sm').append('<p class="text-success">' + json.msg + '</p>');
+                        });
                     }
-                });
+                },
+                error: function (json) {
+                    if (json.statusCode() == 400) {
+                        $('.new-section-sm').append('<p class="text-danger">' + json.idLaboratorio + '</p>');
+                    }
+                }
             });
         });
     </script>

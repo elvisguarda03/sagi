@@ -33,7 +33,8 @@ public class RestExceptionHandler {
             var fieldMessage = f.getDefaultMessage();
             errors.put(field, fieldMessage);
         });
-        errors.put("statusEquipamento", String.valueOf(HttpStatus.BAD_REQUEST.value()));
+        errors.put("status", String.valueOf(HttpStatus.BAD_REQUEST.value()));
+        errors.put("error", String.valueOf(false));
 
         return ResponseEntity.badRequest().body(errors);
     }

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/template}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<th:block layout:fragment="content">
+    <!-- SOLICITAR EMPRESTIMO -->
+
+    <!-- SOLICITAR EMPRESTIMO FIM-->
+
+    <!-- MOVIMENTACOES -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-bordered-mint">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Movimentações</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">Nome Equipamento</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">Código de Patrimônio</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">Solicitante</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="control-label">Local Resignado</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-2 text-center">
+                                <button type="button" class="btn btn-success btn-block">Aplicar filtros</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="new-section-sm">
+                    <div class="pad-btm form-inline">
+                        <div class="row">
+                            <div class="col-sm-6 text-xs-center text-right">
+
+                            </div>
+                        </div>
+                    </div>
+                    <table id="demo-foo-filtering"
+                           class="table table-bordered table-hover toggle-circle default footable-loaded footable"
+                           data-page-size="7">
+                        <thead>
+                        <tr>
+                            <th data-toggle="false" class="footable-visible footable-first-column footable-sortable">
+                                Nome do Equipamento
+                            </th>
+                            <th data-toggle="false" class="footable-visible footable-first-column footable-sortable">
+                                Código de patrimônio
+                            </th>
+                            <th class="footable-visible footable-sortable">Solicitante</th>
+                            <th data-hide="phone, tablet" class="footable-visible footable-sortable">Local designado
+                            </th>
+                            <th data-hide="phone, tablet" class="footable-visible footable-sortable">Data Solicitação</th>
+                            <th data-hide="phone, tablet" class="footable-visible footable-sortable">Data Devolução</th>
+                            <th data-hide="phone, tablet"
+                                class="footable-visible footable-last-column footable-sortable">Ações
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="movi : ${dtoMovimentacoes}" class="footable-even" style="">
+                            <td class="footable-visible footable-first-column"> algo</td>
+                            <td class="footable-visible"> algo</td>
+                            <td class="footable-visible"> algo</td>
+                            <td class="footable-visible" type="date"> algo</td>
+                            <td class="footable-visible" type="date"> algo</td>
+                            <td class="footable-visible footable-last-column"> algo</td>
+                            <td colspan="1" scope="col">
+                                <p>
+                                    <a class="btn btn-primary btn-sm" href="#"><i class="fas fa-edit"></i> Editar</a>
+                                    <a class="btn btn-danger btn-sm delete" id="btnDeletar"><i class="fas fa-trash"></i>
+                                        Excluir</a>
+                                </p>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOVIMENTACOES FIM -->
+    <th:block th:replace="movimentacao/modal_delete.html :: modal">
+    </th:block>
+
+    <!-- chosen -->
+    <th:block layout:fragment="import">
+    </th:block>
+
+</th:block>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $('.delete').click(function () {
+        $('#modal-body').html();
+        $('#modalDeleteMov').modal("show");
+    });
+</script>

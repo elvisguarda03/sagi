@@ -19,11 +19,13 @@ public interface UsuarioRepository extends Repository {
     Boolean existsByEmail(String email);
     Usuario save(Usuario usuario);
     Page<Usuario> findAll(Pageable pageable);
+    Page<Usuario> findByIsDeleteAndStatus(Boolean isDelete, StatusUsuario emailValidado, Pageable pageable);
     List<Usuario> findAll();
     List<Usuario> findByStatus(StatusUsuario status);
-    List<Usuario> findByTipoUsuarioOrTipoUsuario(TipoUsuario admin, TipoUsuario mod);
+    List<Usuario> findByTipoUsuario(TipoUsuario user);
 	Optional<Usuario> findById(String id);
     void updatePassword(String id, String password);
 	void updateStatus(String id, StatusUsuario status);
     void deleteById(String id);
+
 }

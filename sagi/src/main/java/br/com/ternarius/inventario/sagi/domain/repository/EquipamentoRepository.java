@@ -25,8 +25,9 @@ public interface EquipamentoRepository extends Repository {
 	Equipamento save(Equipamento eqp);
     Equipamento updateIsMaintenance(String id, Boolean isMaintenance);
 	Page<Equipamento> findByLaboratorio(Laboratorio laboratorio, Pageable pageable);
-	Optional<Equipamento> findByNomeEquipamento(String nomeEquipamento);
-	List<Equipamento> findByStatus(Boolean status);
+	List<Equipamento> findByNomeEquipamentoIgnoreCaseContaining(String nomeEquipamento);
+	Page<Equipamento> findByIsDelete(Boolean isDelete, Pageable pageable);
+	List<Equipamento> findByIsDelete(Boolean isDelete);
 	List<Equipamento> findAll(Boolean isDelete);
 	Page<Equipamento> findAll(Pageable pageable);
 	Long countByNomeEquipamento(String nomeEquipamento);
@@ -36,7 +37,7 @@ public interface EquipamentoRepository extends Repository {
 	boolean existsByNomeEquipamentoContainingIgnoreCase(String nomeEquipamento);
 
 	default List<Equipamento> find(String nome, String localizacao, Long codigoPatrimonio, BigDecimal valor, EntityManager em) {
-		final var pattern = "%";
+		final var PATTERN = "%";
 
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 		CriteriaQuery<Equipamento> query = criteriaBuilder.createQuery(Equipamento.class);
@@ -50,11 +51,11 @@ public interface EquipamentoRepository extends Repository {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (!isBlank(nome)) {
-			predicates.add(criteriaBuilder.like(nomePath, pattern + nome + pattern));
+			predicates.add(criteriaBuilder.like(nomePath, PATTERN + nome + PATTERN));
 		}
 
 		if (!isBlank(localizacao)) {
-			predicates.add(criteriaBuilder.like(localizacaoPath, pattern + localizacao + pattern));
+			predicates.add(criteriaBuilder.like(localizacaoPath, PATTERN + localizacao + PATTERN));
 		}
 
 		if (!isNull(codigoPatrimonio)) {
@@ -70,5 +71,4 @@ public interface EquipamentoRepository extends Repository {
 
 		return typedQuery.getResultList();
 	}
-
 }

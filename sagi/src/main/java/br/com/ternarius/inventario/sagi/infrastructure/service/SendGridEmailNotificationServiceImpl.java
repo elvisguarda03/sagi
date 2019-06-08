@@ -14,40 +14,38 @@ import br.com.ternarius.inventario.sagi.infrastructure.config.SendGridConfig;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 
  * @author Elvis da Guarda
- *
  */
 @Service
 @Slf4j
 @Qualifier
 @RequiredArgsConstructor
 public class SendGridEmailNotificationServiceImpl implements EmailNotificationService {
-	
-	private final SendGridConfig sendConfig;
 
-	@Override
-	public void send(EmailNotification notification) {
-		try {
-			var from = new Email(notification.getFrom());
-			var to = new Email(notification.getTo());
+    private final SendGridConfig sendConfig;
 
-			var content = new Content("text/plain", notification.getMessage() + notification.getUrl());
+    @Override
+    public void send(EmailNotification notification) {
+        var from = new Email(notification.getFrom());
+        var to = new Email(notification.getTo());
 
-			var mail = new Mail(from, notification.getTitle(), to, content);
-			mail.setReplyTo(from);
+        var content = new Content("text/plain", notification.getMessage() + notification.getUrl());
 
-			var rq = new Request();
-			rq.setMethod(Method.POST);
-			rq.setEndpoint("mail/send");
-			rq.setBody(mail.build());
+        var mail = new Mail(from, notification.getTitle(), to, content);
 
-			var sendGridClient = new SendGrid(sendConfig.getSendGridAPIKey());
-			var response = sendGridClient.api(rq);
+        var sendGridClient = new SendGrid(sendConfig.getSendGridAPIKey());
 
-			log.info("" + response.getStatusCode());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+        try {
+            var rq = new Request();
+            rq.setMethod(Method.POST);
+            rq.setEndpoint("mail/send");
+            rq.setBody(mail.build());
+
+            var response = sendGridClient.api(rq);
+
+            log.info("" + response.getStatusCode());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

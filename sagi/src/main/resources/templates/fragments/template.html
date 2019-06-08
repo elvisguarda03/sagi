@@ -20,7 +20,7 @@
 
 	<!--Bootstrap Stylesheet [ REQUIRED ]-->
 	<link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-
+	<link th:href="@{/scss/themes/material/components/forms/_validation.scss}">
 
 	<!--Nifty Stylesheet [ REQUIRED ]-->
 	<link th:href="@{/bootstrap/css/nifty.min.css}" rel="stylesheet">
@@ -49,7 +49,7 @@
 
 
 	<!--Switchery [ OPTIONAL ]-->
-<!--	<link th:href="@{/plugins/switchery/switchery.min.css}" rel="stylesheet">
+<!--<link th:href="@{/plugins/switchery/switchery.min.css}" rel="stylesheet">
 
 
 	&lt;!&ndash;Bootstrap Select [ OPTIONAL ]&ndash;&gt;
@@ -57,14 +57,11 @@
 
 
 	&lt;!&ndash;Bootstrap Tags Input [ OPTIONAL ]&ndash;&gt;
-	<link th:href="@{/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.css}" rel="stylesheet">-->
+	<link th:href="@{/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.css}" rel="stylesheet">
+-->
 
-	
 	<!-- &ndash;-Chosen [ OPTIONAL ] -->
 	<link th:href="@{/plugins/chosen/chosen.min.css}" rel="stylesheet">
-
-<!--	&lt;!&ndash;Chosen [ OPTIONAL ]&ndash;&gt;-->
-<!--	<link th:href="@{/plugins/chosen/chosen.min.css}" rel="stylesheet">-->
 
 
 <!--	&lt;!&ndash;noUiSlider [ OPTIONAL ]&ndash;&gt;-->
@@ -133,13 +130,11 @@
 					<ul class="nav navbar-top-links">
 
 						<!--Navigation toogle button-->
-						<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 						<li class="tgl-menu-btn">
 							<a class="mainnav-toggle" href="#">
 								<i class="pli-list-view icon-lg"></i>
 							</a>
 						</li>
-						<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 						<!--End Navigation toogle button-->
 					</ul>
 					<ul class="nav navbar-top-links">
@@ -148,22 +143,11 @@
 						<li id="dropdown-user" class="dropdown">
 							<a href="#" data-toggle="dropdown" class="dropdown-toggle text-right btn-dark">
 	                                <span class="ic-user pull-right  ">
-	                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-										<!--You can use an image instead of an icon.-->
-										<!--<img class="img-circle img-user media-object" src="img/profile-photos/1.png" alt="Profile Picture">-->
-										<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 	                                    <i class="pli-male"></i>
 	                                </span>
-								<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-								<!--You can also display a user name in the navbar.-->
-								<!--<div class="username hidden-xs">Aaron Chavez</div>-->
-								<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 							</a>
 							<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
 								<ul class="head-list">
-									<li>
-										<a href="#"><span class="badge badge-danger pull-right">9</span><i class="pli-mail icon-lg icon-fw"></i> Messages</a>
-									</li>
 									<li>
 										<a th:href="@{/perfil-usuario}"><i class="pli-male icon-lg icon-fw"></i> Minha conta</a>
 									</li>
@@ -195,7 +179,7 @@
 					<!--Page Title-->
 					<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 					<div id="page-title">
-						<h1 class="page-header text-center">Sistema de Armazenamento e Gerenciamento de Inventário</h1>
+						<h1 class="page-header text-center">Sistema de Armazenamento e Gerenciamento de Informações</h1>
 					</div>
 					<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 					<!--End page title-->
@@ -304,6 +288,15 @@
 
 									<li>
 										<a th:href="@{/equipamento/solicita-emprestimo}">
+											<i class="psi-arrow-loop"></i>
+											<span class="menu-title">
+													<strong>Solicitações</strong>
+												</span>
+										</a>
+									</li>
+
+									<li>
+										<a th:href="@{/equipamento/movimentacao}">
 											<i class="pli-left-right-3"></i>
 											<span class="menu-title">
 													<strong>Movimentações</strong>
@@ -478,59 +471,52 @@
 	<!-- END OF CONTAINER -->
 
 
-
-
 	<!--JAVASCRIPT-->
 	<!--=================================================-->
 
 	<!--jQuery [ REQUIRED ]-->
-	<!-- 	    <script th:src="@{/bootstrap/js/jquery.min.js}"></script> -->
-	<!-- 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> -->
+	<script th:src="@{/bootstrap/js/jquery.min.js}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
 
 	<!--BootstrapJS [ RECOMMENDED ]-->
 	<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 
-
 	<!--Nifty Admin [ RECOMMENDED ]-->
 	<script th:src="@{/bootstrap/js/nifty.min.js}"></script>
 
-        Switchery [ OPTIONAL ]
-        <script th:src="@{/plugins/switchery/switchery.min.js}"></script>
+	<!--&lt;!&ndash;Bootstrap Select [ OPTIONAL ]&ndash;&gt;-->
+	<script th:src="@{/plugins/bootstrap-select/bootstrap-select.min.js}"></script>
 
-	<!--
-
-    &lt;!&ndash;Bootstrap Select [ OPTIONAL ]&ndash;&gt;
-    <script th:src="@{/plugins/bootstrap-select/bootstrap-select.min.js}"></script>
-
-
-    &lt;!&ndash;Bootth:src="@{/ Tags Input [ OPTIONAL ]&ndash;&gt;
-    <script th:src="@{/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js}"></script>
-
--->
-        &lt;!&ndash;Chosth:src="@{/OPTIONAL ]&ndash;&gt;
-        <script th:src="@{/plugins/chosen/chosen.jquery.min.js}"></script>
-
-        <!--
-            &lt;!&ndash;noUith:src="@{/r [ OPTIONAL ]&ndash;&gt;
-            <script th:src="@{/plugins/noUiSlider/nouislider.min.js}"></script>
-        -->
-
+	<!--&lt;!&ndash;Chosth:src="@{/OPTIONAL ]&ndash;&gt;-->
+	<script th:src="@{/plugins/chosen/chosen.jquery.min.js}"></script>
 
 	<!--Seleth:src="@{/ OPTIONAL ]-->
 	<script th:src="@{/plugins/select2/js/select2.min.js}"></script>
 
+	<!--Formth:src="@{/onent [ SAMPLE ]-->
+	<script th:src="@{/demo/form-component.js}"></script>
 
-	<!--&lt;!&ndash;Bootth:src="@{/ Timepicker [ OPTIONAL ]&ndash;&gt;
+	<th:block layout:fragment="import">
+
+	</th:block>
+
+	<!--
+	Switchery [ OPTIONAL ]
+	<script th:src="@{/plugins/switchery/switchery.min.js}"></script>
+
+    &lt;!&ndash;Bootth:src="@{/ Tags Input [ OPTIONAL ]&ndash;&gt;
+    <script th:src="@{/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js}"></script>
+
+	&lt;!&ndash;noUith:src="@{/r [ OPTIONAL ]&ndash;&gt;
+	<script th:src="@{/plugins/noUiSlider/nouislider.min.js}"></script>
+
+	&lt;!&ndash;Bootth:src="@{/ Timepicker [ OPTIONAL ]&ndash;&gt;
 	<script th:src="@{/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js}"></script>
-
 
 	&lt;!&ndash;Bootth:src="@{/ Datepicker [ OPTIONAL ]&ndash;&gt;
 	<script th:src="@{/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js}"></script>
--->
-
-	<!--Formth:src="@{/onent [ SAMPLE ]-->
-<!--	<script th:src="@{/demo/form-component.js}"></script>-->
+	-->
 
 </div>
 </body>

@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -34,9 +36,21 @@ public abstract class BaseController {
                         .getAuthentication().isAuthenticated();
     }
 
-    public void refresh(UserDetails userDetails) {
+    public void refresh(Usuario usuario) {
+        var userDetails = new User(usuario.getEmail(), usuario.getSenha(), createAuthority(usuario));
+
         Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
+    private Set<GrantedAuthority> createAuthority(Usuario usuario) {
+        var PREFIX = "ROLE_";
+
+        var authority = new HashSet<GrantedAuthority>();
+        AuthorityUtils.createAuthorityList(PREFIX + usuario.getTipoUsuario().toString())
+                .forEach(a -> authority.add(a));
+
+        return authority;
     }
 
     public Boolean hasErrors(BindingResult result, ModelAndView modelAndView) {

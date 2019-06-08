@@ -52,7 +52,6 @@ public class Usuario {
 	private TipoUsuario tipoUsuario;
 	
 	@Column(nullable = false)
-	
 	@Enumerated(EnumType.ORDINAL)
 	private StatusUsuario status;
 

@@ -25,9 +25,15 @@ public enum Message {
 	MSG_17("Senha Atual é inválida."),
 	MSG_18("Senha alterada com sucesso!"),
 	MSG_19("E-mail alterado com sucesso!"),
-	MSG_20("O usuário fornecido não existe.");
-	
-	private String message;
+	MSG_20("O usuário fornecido não existe."),
+	MSG_21("Você não tem permissão para emprestar esse equipamento, este equipamento é restrito para Administradores."),
+	MSG_22("Solicitação cadastrada com sucesso!!\nAguarde a definição do Adminstrador."),
+	MSG_23("Por favor, selecione um Laboratório."),
+	MSG_24("Por favor, selecione um Equipamento."),
+	MSG_25("Esta solicitação é inválida ou inexistente."),
+	MSG_26("Por favor, forneça um Equipamento válido.");
+
+    private String message;
 	
 	Message(String message) {
 		this.message = message;

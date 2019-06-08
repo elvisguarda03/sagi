@@ -98,4 +98,8 @@ public class Equipamento {
             historicos.add(historico);
         }
     }
+
+    public Boolean isValor() {
+        return valor.compareTo(BigDecimal.valueOf(5000)) != 1;
+    }
 }

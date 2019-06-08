@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/templateLogin}">
+<head>
+    <th:block layout:fragment="title">
+        <title>SAGI Basic SENAI | Esqueci senha</title>
+    </th:block>
+</head>
+<th:block layout:fragment="content">
+    <th:block th:if="${#bools.isTrue(success)}">
+        <p><span class="text-success" th:text="${msg}"></span></p>
+    </th:block>
+    <div class="mar-ver pad-btm">
+        <span class="h3">Recuperar senha</span>
+    </div>
+    <form class="form-signin text-left" th:method="POST" th:object="${dto}" th:action="@{/esqueci-minha-senha}">
+        <div class="form-group">
+            <h6>Email</h6>
+            <input type="text" class="form-control" th:classappend="${not #maps.isEmpty(errors) and #maps.containsKey(errors, 'email')} ? 'panel-bordered-danger'" placeholder="Digite seu e-mail aqui..." name="email"
+                   autofocus="" th:field="*{email}" required>
+            <th:block th:if="${not #maps.isEmpty(errors)}">
+                <th:block th:if="${#maps.containsKey(errors, 'email')}">
+                    <p><span class="text-danger" th:text="${errors.get('email')}"></span></p>
+                </th:block>
+                <th:block th:if="${#bools.isTrue(error)}">
+                    <p><span class="text-danger" th:text="${msg}"></span></p>
+                </th:block>
+            </th:block>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block">Enviar</button>
+        <br>
+        <a type="button" class="btn btn-danger btn-lg btn-block" th:href="@{/login}">Voltar para o login</a>
+    </form>
+</th:block>
+</body>
+</html>

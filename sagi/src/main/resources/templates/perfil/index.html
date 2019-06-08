@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/template}">
+<body>
+<th:block layout:fragment="content">
+
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="panel panel-bordered-mint">
+                <div class="panel-heading">
+                </div>
+
+                <!--Data Table-->
+                <!--===================================================-->
+                <div class="panel-body text-center">
+                    <div class="row msg">
+
+                        <div class="col-xs-12">
+                            <div class="text-center">
+                                <img class="img-circle img-md" src="/resources/images/profile-photos/1.png"
+                                     alt="Profile Picture">
+                                <a href="#profile-nav" class="box-block" data-toggle="collapse" aria-expanded="false">
+                                    <p class="mnp-name" th:text="${#httpSession.getAttribute('nome')}"></p>
+                                    <span class="mnp-desc" th:text="${#httpSession.getAttribute('email')}"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="col-sm-2"></div>
+                    <div class="row text-left">
+                        <div class="col-sm-8 ">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h6>Nome</h6>
+                                    <input class="form-control" type="text" name="" id="12">
+                                    <input th:field="${dto.id}" name="id" hidden="hidden">
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h6>E-mail</h6>
+                                    <input class="form-control" type="text" name="email">
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="col-sm-6">
+                                        <button type="button" class="btn btn-warning">Aplicar mudanças</button>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button type="button" class="btn btn-warning" th:attr="onclick=|changePassword('${dto.id}')|" data-target="#modal_TrocarSenha"
+                                                id="btnTrocarSenha">Trocar senha
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="perfil/modal_TrocarSenha.html :: modal">
+    </th:block>
+
+</th:block>
+
+</body>
+</html>
+
+<script type="text/javascript">
+    function changePassword(id) {
+        $('#modal-body').html();
+        $('#idUsuario').val(id);
+        $('#modal_TrocarSenha').modal("show");
+    }
+</script>

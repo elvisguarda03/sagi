@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/template}">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-bordered-mint">
+                <div class="panel-heading">
+                    <h3 class="panel-title">EDITAR EMPRESTIMO</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Equipamento</label>
+                                <br>
+                                <i class="mega-dropdown">
+                                    <a href="#" class="mega-dropdown-toggle">
+                                        <button class="btn btn-primary">Equipamentos</button>
+                                    </a>
+                                    <div class="dropdown-menu mega-dropdown-menu col-sm-12 bg-gray">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <!-- INICIO DO CORPO DA LISTA -->
+                                                <ul class="list-unstyled">
+
+                                                    <!-- INICIO CAMPO DE PESQUISA DA LISTA -->
+                                                    <li class="dropdown-header">
+                                                        <div class="bs-searchbox">
+                                                            <input type="text" class="form-control" autocomplete="off" role="textbox" aria-label="Procurar" placeholder="Pesquise o nome do equipamento aqui...">
+                                                        </div>
+                                                    </li>
+                                                    <!-- FIM CAMPO DE PESQUISA DA LISTA -->
+
+                                                    <!-- INICIO DA LISTA DE ITENS -->
+                                                    <li><a href="#">EQUIPAMENTO 1</a></li>
+                                                    <li><a href="#">EQUIPAMENTO 2</a></li>
+                                                    <!-- FIM DA LISTA DE ITENS -->
+                                                </ul>
+                                                <!-- FIM DO CORPO DA LISTA -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </i>
+                                <!-- EQUIPAMENTO SELECIONADO -->
+                                <div class="col-md-10">
+                                    <input class="form-control" type="text" readonly="" value="Equipamento selecionado" name="input[Equipamento Selecionado]">
+                                </div>
+                                <!-- FIM EQUIPAMENTO SELECIONADO -->
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label">Local para uso</label>
+                                <select name="laboratorio" id="dropLaboratorio" class="form-control" required="">
+                                    <option value="0">Selecione um Laboratório</option>
+                                    <option value="a88469ea-0f69-4179-99e3-0f4560cd189d">Salvador</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">>Data da retirada</label>
+                                <input type="date" class="form-control">
+                            </div>
+
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label">Data da Devolução</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="new-section-sm bord-no">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <button class="btn btn-success col-sm-12" type="submit">EDITAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

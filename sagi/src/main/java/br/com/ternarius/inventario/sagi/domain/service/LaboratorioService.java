@@ -1,7 +1,9 @@
 package br.com.ternarius.inventario.sagi.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import br.com.ternarius.inventario.sagi.domain.enums.Edificio;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import br.com.ternarius.inventario.sagi.domain.entity.Laboratorio;
 import br.com.ternarius.inventario.sagi.domain.repository.LaboratorioRepository;
 import lombok.RequiredArgsConstructor;
+
+import javax.persistence.EntityManager;
 
 /**
  * 
@@ -64,4 +68,16 @@ public class LaboratorioService {
 
 		repository.save(laboratorio);
 	}
+
+    public List<Laboratorio> findByStatus(Boolean status) {
+    	return repository.findByIsDelete(status);
+	}
+
+	public Optional<Laboratorio> findById(String id) {
+		return repository.findById(id);
+	}
+
+    public List<Laboratorio> find(String localizacao, Edificio edificio, Integer andar, EntityManager em) {
+		return repository.find(localizacao, edificio.getEdificio(), andar, em);
+    }
 }

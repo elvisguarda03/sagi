@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -36,15 +37,16 @@ public class MovimentacaoService {
     public void giveBack(String id) {
         var movimentacao = movimentacaoRepository.findById(id).get();
         movimentacao.getEquipamento().setLaboratorio(movimentacao.getLocalizacaoAnterior());
+        movimentacao.setStatus(true);
 
-        deleteById(id);
-    }
-
-    public void deleteById(String id) {
-        movimentacaoRepository.deleteById(id);
+        cadastrar(movimentacao);
     }
 
     public Optional<Movimentacao> findById(String id) {
         return movimentacaoRepository.findById(id);
+    }
+
+    public List<Movimentacao> find(String nomeEquipamento, String nomeAdmin, String solicitante, String localizacaoAtual, EntityManager em) {
+        return movimentacaoRepository.find(nomeEquipamento, localizacaoAtual, nomeAdmin, solicitante, em);
     }
 }

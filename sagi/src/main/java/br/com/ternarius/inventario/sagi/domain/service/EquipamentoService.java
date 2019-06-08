@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,8 +54,8 @@ public class EquipamentoService {
         return equipamentoRepository.findById(id);
     }
 
-    public List<Equipamento> findByStatus() {
-        return equipamentoRepository.findByStatus(true);
+    public Page<Equipamento> findByIsDelete(Boolean status, Pageable pageable) {
+        return equipamentoRepository.findByIsDelete(status, pageable);
     }
 
     public void unavailable(String idEquipamento) {
@@ -82,4 +81,7 @@ public class EquipamentoService {
         return equipamentoRepository.updateIsMaintenance(id, isMaintenance);
     }
 
+    public List<Equipamento> findByNomeEquipamento(String nomeEquipamento) {
+        return equipamentoRepository.findByNomeEquipamentoIgnoreCaseContaining(nomeEquipamento);
+    }
 }

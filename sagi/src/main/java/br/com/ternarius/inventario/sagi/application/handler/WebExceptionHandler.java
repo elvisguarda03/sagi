@@ -12,7 +12,7 @@ public class WebExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ModelAndView handlerAccessDeniedException(AccessDeniedException exception) {
         var modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/erro/acesso-negado");
+        modelAndView.setViewName("errors/acesso-negado");
         modelAndView.addObject("erro", exception.getMessage());
 
         return modelAndView;

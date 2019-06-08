@@ -150,7 +150,11 @@ public class LoginService {
 		var record = usuarioRepository.findById(id);
 
 		if (record.isPresent()) {
-			usuarioRepository.updatePassword(record.get().getId(), newPassword);
+			var user = record.get();
+			user.setSenha(newPassword);
+			user.criptografarSenha();
+
+			usuarioRepository.updatePassword(user.getId(), user.getSenha());
 		}
 
 		return notification;

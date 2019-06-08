@@ -25,6 +25,7 @@ public interface LaboratorioRepository extends Repository {
 	Optional<Laboratorio> findById(String id);
     Page<Laboratorio> findAll(Pageable pageable);
 	List<Laboratorio> findAll(Boolean isDelete);
+    List<Laboratorio> findByIsDelete(Boolean status);
     boolean existsByLocalizacaoContainingIgnoreCase(String localizacao);
 	void updateLocalizacaoAndEdificioAndAndar(String id, String localizacao, String edificio, Integer andar);
 
